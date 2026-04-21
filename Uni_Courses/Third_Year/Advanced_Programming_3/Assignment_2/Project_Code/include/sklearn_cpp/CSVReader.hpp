@@ -39,11 +39,19 @@ namespace CSVReader {
         //added functionality to exctract headers
         std::vector<std::string> headers;
 
+        //flag to detect datasets like mnist where the label is stored in the first column called "label"
+        bool label_first = false;
+
         if (has_header && std::getline(file, line)) {
             std::stringstream ss(line);
             std::string cell;
             while (std::getline(ss, cell, ',')) {
                 headers.push_back(cell);
+            }
+
+            //If the first header is literally called label, we interpret the file as label-first
+            if (!headers.empty() && headers[0] == "label") {
+                label_first = true;
             }
         }
         data.headers = headers;
@@ -51,9 +59,11 @@ namespace CSVReader {
         /*
         For every line in the CSV:
         1. Skip if empty or invalid
-        2. Extract everything but the last column as the X
-        3. Extract the last column as the Y
-        4. Into data.X push back the vector of columns except the last one, data.Y is the last column
+        2. Extract the features and target
+        3. Push the parsed values into the Dataset object
+
+        By default this reader assumes the last column is the target.
+        For files like MNIST where the first column is called label, we switch to label-first parsing.
         */
         while (std::getline(file, line)) {
             if (line.empty()) {
@@ -72,13 +82,21 @@ namespace CSVReader {
                 throw std::runtime_error("Each row must contain at least 1 feature and 1 target.");
             }
 
-            // Extract everything but the last column as the X
-            std::vector<double> features(row_values.begin(), row_values.end() - 1);
+            std::vector<double> features{};
+            double target{};
 
-            //The last column is the Y
-            double target = row_values.back();
+            if (label_first) {
+                //label-first format -> first column is y, everything else is X
+                target = row_values.front();
+                features.assign(row_values.begin() + 1, row_values.end());
+            }
+            else {
+                //default format -> everything but the last column is X, the last column is y
+                features.assign(row_values.begin(), row_values.end() - 1);
+                target = row_values.back();
+            }
             
-            //Into X push back the vector of columns except the last one, Y is the last column
+            //Into X push back the vector of features, and into y push back the parsed target
             data.X.push_back(features);
             data.y.push_back(target);
         }
