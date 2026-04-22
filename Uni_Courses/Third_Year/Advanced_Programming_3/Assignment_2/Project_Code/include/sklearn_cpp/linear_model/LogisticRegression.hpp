@@ -2,11 +2,18 @@
 
 #include "../DatasetClass.hpp"
 #include <cmath>
-#include <algorithm> //used for the MODE deciding function (online documentation)
-#include <stdexcept> //runtime errors
+#include <algorithm> //used for the MODE deciding function and other helpers (used online documentation to implement)
+
+#include <stdexcept> 
+
+/*runtime errors -> used online documentation to implement try{}catch{} methodology to catch runtime errors 
+(sometimes the user might enter an incorrect dataset and it throws an error at runtime)
+
+This file only throws the errors, our test.cpp files actually uses try{}catch{} 
+*/
+
 
 /*
-
 =================================
 ========LOGISTIC REGRESSION=======
 =================================
@@ -21,7 +28,7 @@ Multiclass classification
 
 weights -> [class][feature] -> in binary we only use the first row, in multiclass we use all rows. Hence, for binary the outer size is 1, for multiclass the outer size is K
 biases -> [class] -> in binary we only store one bias value, in multiclass its K values
-outputs[sample][class] -> predictions: each sample has a vector of probabilities for each class
+outputs -> [sample][class] -> stores predictions: each sample has a vector of probabilities for each class (decision_function() is the only one which returns raw scores, others use this structure)
 
 ====================================
 ========IMPLEMENTED FEATURES=========
@@ -33,12 +40,15 @@ The gradient descent method is implemented as the main training algoritm.
 
 Prediction API is based on the sklearn API, so we have separated the predict functions into three which may be called separately 
 -> like the real library, but the predict() is the main user interface:
-1. decision_function() -> returns the raw y prediction values before the sigmoid
+
+1. decision_function() -> returns the raw y prediction values before the sigmoid for BINARY; returns the raw scores for MULTICLASS
 2. predict_proba() -> returns predicted probabilities:
-   - binary: probability of the positive class as [sample][1]
+   - binary: probability of the class as [sample][0] (because binary only has one positive class (is or is not the class) so only uses first row of the inner)
    - multiclass: full probability vector [sample][class]
 3. predict() -> returns the final class predictions based on the probabilities -> MAIN USER INTERFACE
-4. Dataset predict() -> The predict function is overloaded to work with a Dataset object which we generate from the CSV files, which is going to be the main way to use our library
+    - binary: we threshold at 0.5 for the probability to make the class distinction
+    - multiclass: the choose the class with the highest raw score for the final decision
+4. Dataset predict() -> The predict function is overloaded to work with a Dataset object which we generate from the CSV file reader, which is going to be the main way to use our library
 
 */
 
@@ -58,10 +68,7 @@ class LogisticRegression {
         size_t n_iterations_ = 2000;
         double lambda = 0.01; //regularization parameter -> used later in fit
 
-        //tiny epsilon used in the loss calculation so log(0) never happens -> important to avoid the log calculations "exploding", good practice
-        double eps_ = 1e-15;
-
-        //Track the last loss value from the current fit -> can compare between fits
+        //Track the last loss value from the current fit -> can compare between fits (how low the last loss got)
         double current_loss = 0.0; 
 
         //enum for deciding whether to implement the binary or multiclass version -> decided based on the fit function
@@ -71,7 +78,8 @@ class LogisticRegression {
             MULTICLASS
         };
 
-        //default to NOT_FIT, will be changed in fit function
+        //default to NOT_FIT, will be changed in fit function 
+        //essentially acts as a check if a user tries to predict using an unfitted models
         MODE current_mode = MODE::NOT_FIT; 
 
         /*
@@ -89,30 +97,40 @@ class LogisticRegression {
                 return MODE::MULTICLASS;
             }
             else {
+                //only occurs when the dataset only has one Y value which is...a strange dataset
                 throw std::runtime_error("Invalid number of unique classes in y values.");
             }
         }
 
         /*
         Helper to extract abd store unique class labels for multiclass classification.
-        We sort first so the mapping is stable and predictable
+        We sort first and return all unique labels
         */
         std::vector<int> extract_labels(const sklearn_cpp::Dataset& data) const {
             std::vector<int> labels;
-            labels.reserve(data.y.size());
+
+            /*
+            reserves an appropriatelly sized vector (faster for runtime instead of continuously pushing and having to expand the vector)
+            Yes the time save here is miniscule so we usually just extend the vector by pushing more values in the later code
+            */
+            labels.reserve(data.y.size()); 
 
             for (double y_value : data.y) {
-                labels.push_back(static_cast<int>(y_value));
+                labels.push_back(int(y_value)); //assume classes are meant to be integers and not double values like 2.1 and 3.8 -> cast to int
             }
 
+            //using std:: library for sorting -> creates a sorted vector
             std::sort(labels.begin(), labels.end());
+            //Keep only unique values and erase any left-over repeating labels -> yields a vector of all the possible classes without repeating
             labels.erase(std::unique(labels.begin(), labels.end()), labels.end());
+
             return labels;
         }
 
        /*
        Helper which maps an original label value ro the internal class index 0,1,2,...,k-1.
        This is useful because the maths for softmax is much easier with compact class indices.
+       Later on we map the predictions back to their original labels
        */
        size_t label_to_index(int label) const {
             for (size_t i = 0; i < class_labels.size(); ++i) {
@@ -155,7 +173,7 @@ class LogisticRegression {
             //Decide the mode -> binary or multiclass, changes the internal backend of the functions
             this->current_mode = decide_mode(data);
 
-            //Store the header labels for later use
+            //Use the helper to store the class labels in the member variable for later use
             this->class_labels = extract_labels(data);
 
             if(this->current_mode == MODE::BINARY) {
@@ -185,22 +203,14 @@ class LogisticRegression {
                     for (size_t i = 0; i < m; i++) {
                         double y_hat = y_predictions[i][0];
 
-                        //Same logarithm safety -> just to make sure output doesn't explode
-                        if (y_hat < eps_) {
-                            y_hat = eps_;
-                        }
-                        if (y_hat > 1.0 - eps_) {
-                            y_hat = 1.0 - eps_;
-                        }
-
-                        //This line is a safety to ensure that the class labels are just 1.0 and 0.0, in case original dataset uses something else
+                        //Use class[1] -> 1 and class[0] -> 0 internally so it's easier
                         double y_true = (int(data.y[i]) == class_labels[1]) ? 1.0 : 0.0;
 
                         //loss equation
                         loss += y_true * std::log(y_hat)
                             + (1.0 - y_true) 
                             * std::log(1.0 - y_hat);
-                                            }
+                    }
 
                     //divide by - 1/ m to get the final loss value (no regularization yet)
                     loss = -(1.0 / (double)(m)) * loss;
@@ -255,16 +265,11 @@ class LogisticRegression {
                 for (size_t i = 0; i < m; i++) {
                     double y_hat = y_predictions[i][0];
 
-                    //As always -> log protection
-                    if (y_hat < eps_) {
-                        y_hat = eps_;
-                    }
-                    if (y_hat > 1.0 - eps_) {
-                        y_hat = 1.0 - eps_;
-                    }
-
-                    //map back to original class labels
-                    double y_true = (static_cast<int>(data.y[i]) == class_labels[1]) ? 1.0 : 0.0;
+                    /*
+                    again map the class values to 1.0 and 0.0 internally
+                    (double so that we don't trucate using integer division, even if 1 and 0 is "simpler")
+                    */
+                    double y_true = (int(data.y[i]) == class_labels[1]) ? 1.0 : 0.0;
 
                     loss += y_true * std::log(y_hat)
                         + (1.0 - y_true) 
@@ -301,6 +306,7 @@ class LogisticRegression {
                 std::vector<int> multiclass_labels = extract_labels(data);
                 const size_t num_classes = multiclass_labels.size();
 
+                //Zero the learnable parameters to retrain, even if the model was trained before
                 weights.assign(num_classes, std::vector<double>(num_features, 0.0));
                 biases.assign(num_classes, 0.0);
 
@@ -320,18 +326,10 @@ class LogisticRegression {
                     //this loop calculates the multiclass cross entropy loss
                     for (size_t i{0}; i < m; i++) {
                         int current_label = static_cast<int>(data.y[i]);
-                        size_t true_class_index = label_to_index(current_label);
+                        size_t true_class_index = label_to_index(current_label); //track the labels using the helper
 
                         //only the true class contributes to the one-hot cross entropy expression
                         double y_hat_true = y_probabilities[i][true_class_index];
-
-                        //bound the probability away from 0 so log(0) never happens
-                        if (y_hat_true < eps_) {
-                            y_hat_true = eps_;
-                        }
-                        if (y_hat_true > 1.0) {
-                            y_hat_true = 1.0;
-                        }
 
                         loss += -std::log(y_hat_true);
                     }
@@ -404,14 +402,6 @@ class LogisticRegression {
                     size_t true_class_index = label_to_index(current_label);
 
                     double y_hat_true = y_probabilities[i][true_class_index];
-
-                    //bound the probability away from 0 so log(0) never happens
-                    if (y_hat_true < eps_) {
-                        y_hat_true = eps_;
-                    }
-                    if (y_hat_true > 1.0) {
-                        y_hat_true = 1.0;
-                    }
 
                     loss += -std::log(y_hat_true);
                 }
@@ -523,7 +513,7 @@ class LogisticRegression {
         }
 
         /*
-        This function uses the sigmoid on the predicted y value
+        This function uses the sigmoid on the predicted y value for BINARY or on the softmax for MULTICLASS
         */
         std::vector<std::vector<double>> predict_proba(const std::vector<std::vector<double>>& X) const {
             if(current_mode == MODE::NOT_FIT) {
@@ -548,16 +538,27 @@ class LogisticRegression {
             //Multiclass implementation
             else {
                 for (const auto& row : decision_values) {
-                    double max_logit = *std::max_element(row.begin(), row.end());
 
+                    double largest_score = row[0]; 
+
+                    // Find the largest raw score in this sample using a for loop
+                    for (size_t class_index = 1; class_index < row.size(); class_index++) {
+                        if (row[class_index] > largest_score) {
+                            largest_score = row[class_index];
+                        }
+                    }
+
+                    //Stores the softmax probabilities for the current sample
                     std::vector<double> current_probabilities(row.size(), 0.0);
                     double denominator = 0.0;
 
+                    // exponentiate each shifted score and sigma the common denominator
                     for (size_t k{0}; k < row.size(); k++) {
-                        current_probabilities[k] = std::exp(row[k] - max_logit);
+                        current_probabilities[k] = std::exp(row[k] - largest_score);
                         denominator += current_probabilities[k];
                     }
 
+                    //Make sure that each possibility is normalize so that their sum is one
                     for (size_t k{0}; k < row.size(); k++) {
                         current_probabilities[k] /= denominator;
                     }
@@ -599,21 +600,23 @@ class LogisticRegression {
 
             //Multiclass implementation
             else {
-                //Calculate the raw scores
+                //Calculate the raw scores for every class and every sample -> use decision_function and receive the nested vector
                 std::vector<std::vector<double>> scores = decision_function(X);
 
-                //Iterate over all the scores
+                //Iterate over all the scores and find the highest score
                 for (size_t i{0}; i < scores.size(); i++) {
                     size_t best_class_index = 0;
                     double best_score = scores[i][0];
 
+                    //keep track of the highest score and iterate
                     for (size_t k{1}; k < scores[i].size(); k++) {
                         if (scores[i][k] > best_score) {
                             best_score = scores[i][k];
                             best_class_index = k;
                         }
                     }
-
+                    
+                    //use the internal member variable class_labels to map back to the original label before returning
                     class_predictions.push_back(class_labels[best_class_index]);
                 }
 
@@ -621,6 +624,7 @@ class LogisticRegression {
             }
 
         }
+
         /*
         ==========================================
         ======PREDICT DATASET IMPLEMENTATION======
@@ -629,6 +633,9 @@ class LogisticRegression {
 
         /*
         This function returns the final class predictions based on the probabilities -> MAIN USER INTERFACE USING OUR DATASET CLASS, which we generate from the CSV files
+        This function uses Pass by Value on the data, because we erase the y_value column completely and refill it using the predictions
+        -> we don't want to override the input dataset, we output a new one
+        This member function is const because it only predicts and outputs a new dataset, but does not change any fitted values in the LogisticRegression object
         */
         sklearn_cpp::Dataset predict(sklearn_cpp::Dataset data) const {
             if(current_mode == MODE::NOT_FIT) {
@@ -682,15 +689,16 @@ class LogisticRegression {
                 throw std::runtime_error("X and y size mismatch.");
             }
 
-            //use the model to predic the Y values based on the X values
+            //use the model to predict the Y values based on the X values
             std::vector<int> y_pred = predict(data.X);
 
             //range based for loop which compares if the predicted class matches the original in the dataset
+            //keep track in a correct integer, then use it to calculate the percentage using num_correct/total
             size_t correct = 0;
             for (size_t i = 0; i < data.y.size(); ++i) {
-                int y_true = static_cast<int>(data.y[i]);
+                int y_true = int(data.y[i]);
                 if (y_pred[i] == y_true) {
-                    ++correct;
+                    ++correct; 
                 }
             }
 
