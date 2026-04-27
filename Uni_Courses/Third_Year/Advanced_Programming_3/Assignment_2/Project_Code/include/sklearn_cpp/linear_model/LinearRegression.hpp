@@ -27,7 +27,6 @@ namespace linear_model {
 //Little helper to calculate mean
 //We can actualy use the templates here to ensure our helper works for int and double, etc.
 template<typename T> 
-
 inline double calculate_mean(const std::vector<T> &vect) {
     double mean{0};
     for(size_t i{0}; i < vect.size(); i++) {
@@ -35,6 +34,7 @@ inline double calculate_mean(const std::vector<T> &vect) {
     } 
     return mean / vect.size();
 }
+
 
 class LinearRegression {
 
@@ -267,6 +267,19 @@ public:
         }
 
         return 1.0 - (ss_res / ss_tot);
+    }
+
+    /*
+    ===================================
+    =========== LOAD FUNCTION =========        
+    ===================================
+
+    This function takes in a pre-fitted weights set and loads it into the current object -> used so we can fit once and then use the same fitted model in multiple test
+    */
+
+    void load(const std::vector<double>& fitted_weights, double fitted_b) {
+        this->weights = fitted_weights;
+        this->b = fitted_b;
     }
 
     /*

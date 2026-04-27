@@ -709,6 +709,30 @@ class LogisticRegression {
 
         /*
         ===================================
+        =========== LOAD FUNCTION =========
+        ===================================
+
+        This function takes in a pre-fitted weights set and loads it into the current object -> used so we can fit once and then use the same fitted model in multiple test
+        */
+
+        void load(const std::vector<std::vector<double>>& fitted_weights, const std::vector<double>& fitted_b, const std::vector<int>& labels) {
+            this->class_labels = labels;
+            this->weights = fitted_weights;
+            this->biases = fitted_b;
+
+            //Run a quick check based on the number of unique labels to set the mode:
+            if (class_labels.size() == 2){
+                this->current_mode = MODE::BINARY;
+            }
+            else {
+                this->current_mode = MODE::MULTICLASS;
+            }
+
+            
+        }
+
+        /*
+        ===================================
         ===========GET HELPERS ============
         ===================================
         */
@@ -717,6 +741,9 @@ class LogisticRegression {
         }
         const std::vector<double>& get_b_values() const { 
             return biases; 
+        }
+        const std::vector<int>& get_labels() const {
+            return class_labels;
         }
         double get_current_loss() const {
             return current_loss;
