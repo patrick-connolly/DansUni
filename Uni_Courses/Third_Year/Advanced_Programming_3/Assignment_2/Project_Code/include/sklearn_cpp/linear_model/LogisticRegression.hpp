@@ -49,6 +49,9 @@ Prediction API is based on the sklearn API, so we have separated the predict fun
     - binary: we threshold at 0.5 for the probability to make the class distinction
     - multiclass: the choose the class with the highest raw score for the final decision
 4. Dataset predict() -> The predict function is overloaded to work with a Dataset object which we generate from the CSV file reader, which is going to be the main way to use our library
+5. accuracy_score() -? uses the internal predict() member function and the given loaded Y values to generate the predicted Y values, and outputs an accuracy score in percent
+6. load() -> requires an input array for of weights and biases and loads them as the current weights 
+          -> Can run the model once, use the getters to output the trained weights and use them to create a trained model instance in another program.
 
 */
 
