@@ -41,7 +41,8 @@ class Dataset {
         =====================
         LINEAR DATASET RNG GENERATOR WITH NOISE (ONE X AND ONE Y)
         MOSTLY FOR TESTING PURPOSES!
-        Simple contrustor so we can easily create new datasets with different seeds.
+        RESUSED FROM THE PREVIOUS ASSIGNMENT
+        Simple contrustor so we can easily create new datasets with different seeds and random values.
         */
          
         Dataset(double k , double b, size_t num_points, int min, int max, int seed, double noise_multiplier, double sigma) 

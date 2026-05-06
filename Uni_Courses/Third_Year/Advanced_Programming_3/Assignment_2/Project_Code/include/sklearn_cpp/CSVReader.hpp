@@ -60,7 +60,7 @@ namespace CSVReader {
                 headers.push_back(cell);
             }
 
-            //If the first header is literally called label, we interpret the file as label-first
+            //If the first header is literally called 'label', we interpret the file as label-first
             if (!headers.empty() && headers[0] == "label") {
                 label_first = true;
             }

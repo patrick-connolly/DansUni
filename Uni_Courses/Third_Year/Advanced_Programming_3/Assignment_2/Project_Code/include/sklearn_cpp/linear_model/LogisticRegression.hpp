@@ -52,7 +52,7 @@ Prediction API is based on the sklearn API, so we have separated the predict fun
 5. accuracy_score() -? uses the internal predict() member function and the given loaded Y values to generate the predicted Y values, and outputs an accuracy score in percent
 6. load() -> requires an input array for of weights and biases and loads them as the current weights 
           -> Can run the model once, use the getters to output the trained weights and use them to create a trained model instance in another program.
-
+7. Get helpers -> useful when wanting to export or otherwise use the internal weights, biases, labels and loss
 */
 
 namespace sklearn_cpp {

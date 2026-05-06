@@ -3,7 +3,7 @@
 #include <iostream>
 #include <chrono>
 
-//this file includes all the weights we have already tested so this file can show prodict(), among other functionality, without taking 15 minutes
+//this file includes all the weights we have already tested so this file can show predict(), among other functionality, without taking 15 minutes to fit the models each time
 #include "test_fitted_values.hpp" 
 
 /*
@@ -18,12 +18,13 @@ This is why we included the load() functionality!
 =============================
 
 =====================================================================================================================
-IF YOU WANT TO LOAD ALL WEIGHTS FOR ALL PARAMETERS, SET THIS TO 1, IF YOU WANT TO RUN .fit() ON ALL SET THIS TO 0
+IF YOU WANT TO LOAD ALL WEIGHTS FOR ALL PARAMETERS FROM OUR PRE-TRAINED FILE, SET THIS TO 1, IF YOU WANT TO RUN .fit() ON ALL MODELS AND MAKE YOUR CPU CRY THEN SET THIS TO 0
 =====================================================================================================================
 */
 #define LOAD_WEIGHTS_FROM_FILE 1
 
-//we use a template there to overload the out operator to work with the vectors we use internally -> allows us to easily print all the weights in a nice { x, x} format
+//we use a template here to overload the out operator to work with the vectors we use internally 
+//-> allows us to easily print all the weights in a nice { x, x} format so we can copy paste into our "storage" file
 template<typename T> 
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& vector) {
     out << "{";
@@ -214,7 +215,7 @@ int main() {
         sklearn_cpp::Dataset mnist_test  = sklearn_cpp::CSVReader::read_CSV("data/mnist_test.csv", true);
 
         sklearn_cpp::linear_model::LogisticRegression mnist_logreg(1e-5,   //iteration speed
-                                                                100,    //number of iterations (the list is huge)
+                                                                100,    //number of iterations (small, the list is huge)
                                                                 0.0001  //lambda
                                                                 );
         
@@ -266,6 +267,7 @@ int main() {
 
     }                                                     
     catch (const std::exception& e) {
+        //print the error in a nice error format onto the console
         std::cerr << "\nCaught exception: " << e.what() << '\n';
     }
 

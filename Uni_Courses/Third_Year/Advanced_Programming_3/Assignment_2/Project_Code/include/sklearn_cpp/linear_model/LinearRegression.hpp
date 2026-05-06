@@ -14,6 +14,9 @@ Implemented features:
     a. std::vector<double> predict(const std::vector<std::vector<double>>& X) -> takes in a vector of X values and returns a vector of predicted Y values based on the current weights and b.
     b. Dataset predict(Dataset data) -> overloaded predict function which takes in a Dataset object and overwrites the internal Y values with the predicted Y values based on the current weights and b. Returns the modified Dataset object.
 3. R2 score function -> double r2_score(const Dataset& data) -> takes in a Dataset object and calculates the R2 score based on the current model's predictions and the actual Y values in the dataset.
+4. load() -> requires an input array for of weights and biases and loads them as the current weights 
+          -> Can run the model once, use the getters to output the trained weights and use them to create a trained model instance in another program.
+5. Get helpers -> useful when wanting to export or otherwise use the internal weights, biases and loss
 
 */
 
