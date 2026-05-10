@@ -1,0 +1,699 @@
+---
+title: "Assignment 02"
+subtitle: "C++ Object-oriented Programming"
+author:
+    Khiem Nguyen 
+    <br> Lecturer in Multiscale Materials
+    <br> <khiem.nguyen@glasgow.ac.uk>
+author-meta: "Lecturer in Multiscale Materials"
+jupyter: false
+execute: 
+  eval: true
+format: 
+    html:
+        code-line-numbers: false
+        output-file: "mock.html"
+        embed-resources: true
+        grid:
+            body-width: 1600px
+            margin-width: 20px
+            sidebar-width: 200px
+        # page-layout: full
+        # margin-left: 0.5em
+        # margin-right: 0.5em
+       
+        css: style.css
+        number-sections: true
+        number-depth: 2
+        toc: true               # table of content
+        toc-location: left      # table of content on the left
+        toc-title: "Table of Content"   # table of content title
+
+    pdf:
+        code-line-numbers: false
+        output-file: "mock.pdf"
+        embed-resources: true
+        geometry:
+            - top=24px
+            - bottom=24px
+            - left=36px
+            - right=36px
+        css: style.css
+        number-sections: true
+        number-depth: 2
+        toc: true               # table of content
+        toc-location: left      # table of content on the left
+        toc-title: "Table of Content"   # table of content title
+        colorlinks: true
+---
+
+# Foreword
+
+## Structure of the paper exam
+
+The real paper exam contains $3$ questions with the following grade distribution:
+
+| Question    | Grade  |
+|:------------|:-------|
+| Q1: C++ Theory  | 30     |
+| Q2: Writing C++ Code  | 40     |
+| Q3: UML Class diagram  | 30     |
+
+## How to pass the course
+
+Over the the past two years I received two common questions. I believe that it is good to write down my answers so that you understand the course's demand, and my philosophy.
+
+- **Question 1**: Can I pass the entire course with $0$ on the paper exam because I have already achieved $80\%$ on the $50\%$ of the course grade (coursework as continous assessment)
+
+    **Answer**: No, you won't. According to the UoG's guideline, you need to pass any component constituting of more than $30\%$ of the course grade by the minimum **E3** (namely 30 points out of 100 points). In general, I am happy to pass somebody with $28{} \textendash{} 29$ points with true effort. But if that somebody got $28$ points due to my gentle marking, I still need to fail them. For example, I give $1$ point for every attempt while the answers are all wrong and your grade still cannot cross the threshold $30$ points, you deserve a fail even at the boundary $29$ points.
+
+- **Question 2**:  Can I pass the exam by learning everything by heart without understanding the logics or should I understand the logic?
+
+    **Answer**: This question sounds irony but it is completely legitimate. Here is my thought. First, exams are deisnged to test your knowledge, not to test your memory. So, without understanding the logics, I think you will likely fail. Second, I don't believe that that anybody can learn $200$ lines of code by heart and can apply what they memorize to another applications without understanding a single thing. In doing that, you have already understood something. If you believe that you already learned $200$ lines of code by heart but you could not apply what you did to a similar application, then you actually did not learn anything by heart.
+
+## What to review
+
+When I was a student, my professors always answer the question "what to review?" by a single sentence: "Everything we have learned so far". That's all, no further elobration. Personally, I think this should be a standard question for such a question too. What's the point if you can pass an exam by knowing a very specific area. You are educated to work in real-world environment, not to pass the exams.
+
+Saying that, this is my advice. You should at least understand the following important concepts and know how to implement them in C++ code.
+
+- **Basics of C++**: To understand the code and to understand exam's questions, of course you need to know and understand the basics of C++.
+    - [**Iteration statements**]{style="color:blue"}: `for` loop`, `while` loop, `do-while` loop
+    - [**Condition statements**]{style="color:red"}: `if` statement, `if-else` statement, `if-else-if` statement
+    - [**Functions**]{style="color:red"}: function definition, parameters versus arguments, return value of a function
+
+- **Intermediate of C++**: The question of C++ theory basically may ask you anything we have learned so far from the lectures. However, these are the concepts you may want to pay good attention on
+    - [**reference**]{style="color:blue"}, [*pass by reference*]{style="color:blue"} versus [*pass by value*]{style="color:blue"} in writing functions
+    - [**pointer**]{style="color:blue"}, [*pass by pointer*]{style="color:blue"} (frequenly called [*pass by address*]{style="color:blue"})
+    - [**template**]{style="color:blue"}: function template, class template
+
+- **Object-oriented programming**: Of course, you should be able to implement very basics of object-oriented programming paradigm.
+    - [**class**]{style="color:brown"}: define a class, write a constructor, write a destructuor, list initializer for constructor, etc.
+    - [**access speficiers**]{style="color:brown"}: `private`, `public` and `protected`. `protected` is rarely used but you may at least need to be aware of this.
+    - [**overriding operators**]{style="color:brown"}: override operator `<<` (output the object), arithmetic operators `+` (addition), `-` (subtraction), `*` (multiplication), etc.
+    - [**inheritance**]{style="color:brown"}: basic concept of inheritance, how to define a child class
+    - [**polymorphism**]{style="color:brown"}: basic concept of polymorphism, how to implement polynomorphism for children classes using `virtual function`.
+    - [**abstract class**]{style="color:brown"}: basic concept of abstract class, how to make a class abstract.
+
+That sounds a lot!?!? **Not really**. If you practice **Question 2:: Writing C++ Code**, you have reviewed most of the important points here.
+
+# Mock exam
+
+The **mock exam** here follows similar structure of the **real exam** with of course different questions in the part asking C++ theories and a different application in the question asking writing C++ code, and in drawing UML class diagram.
+
+:::{.callout-warning}
+# Appearance of the real exam vs the mock exam
+
+The real paper exam is prepared by LaTeX. So you should see that the questions look like in the past paper exam, namely (a), (b), $\ldots$, (g). However, this mock exam is prepared by using Quarto. [Therefore, the appearance of this mock exam may not look exactly the same as the real one although they are essentially the same. The content is tremendously helpful for the real paper exam though.]{style="color:blue"}
+:::
+
+:::{.callout-note}
+# Learn the logics behind the mock exam
+- [Note that the **real exam** is **definitely much shorter than** the **mock exam** here.]{style="color:red"} The mock exam is longer because I want to provide an opportunity for you to "really learn", not to "remember by heart".
+- I struggle preparing this mock exam because I don't want it to be so similar to the real paper exam. But I don't want it to be completely different from the real exam. What's the point of a mock exam if it is completely different? 
+- [**So you should learn the programming logics behind this mock exam, don't try to learn it by heart.**]{style="color:red"}
+:::
+
+## Question 1: C++ Theory
+
+
+### Question (a)
+
+You are given the following code snippet:
+
+```{.cpp code-line-numbers="true"}
+#include <iostream>
+
+// 1. Increments the value of 'n' by 10 using a pointer.
+void increment_by_pointer(int* ptr) {
+    // Write code here
+}
+
+// 2. Doubles the value of 'n' using a reference.
+void double_by_reference(int& ref) {
+    // Write code here
+}
+
+// 3. Swaps the address held by two pointers (Pointer to Pointer).
+// Note: This should change where the pointers in main point to.
+void swap_pointers(int** ptr1, int** ptr2) {
+    // Write code here
+}
+
+int main() {
+    int a { 5 };
+    int b { 50 };
+    
+    int* pA { &a };
+    int* pB { &b };
+
+    // Task 1: Use increment_by_pointer to make 'a' equal to 15.
+    // Task 2: Use double_by_reference to make 'b' equal to 100.
+    // Task 3: Use swap_pointers so that pA points to 'b' and pB points to 'a'.
+
+    return 0;
+}
+```
+
+**Question**: 
+
+1. Write the implementation for `increment_by_pointer()`. 
+2. Write the implementation for `double_by_reference()`. 
+3. Write the implementation for `swap_pointers()`. 
+4. Write the three lines of code inside `main()` required to call these functions correctly using the variables provided. 
+
+You only need to missing code -- don't rewrite what have been provided. You may need to write the line number shown on the code for easy navigation.
+
+### Answer (a)
+
+You only need to write the code that the question asks to write. [Don't waste time rewriting code that the question does not ask to write.]{style="color:red"}. If you want to be sure, just write the line number
+
+1. Implementation for `increment_by_pointer()`, at line $5$
+
+    `*ptr += 10;`
+
+    Explanation: We must dereference the pointer.
+2. Implementation for `double_by_reference()`, at line $10$: 
+
+    `ref *= 2;`
+
+    Explanation: We must treat the reference like standard variable
+
+3. Implementation for `swap_pointers()`, inside the function body, from line 16:
+
+    ```{.cpp}
+    int* temp = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = temp;
+    ```
+
+4. Code in the `main()` function body:
+
+    ```{.cpp}
+    increment_by_pointer(&a); // or increment_by_pointer(pA);
+    double_by_reference(b);
+    swap_pointers(&pA, &pB);
+    ```
+
+
+### Question (b)
+
+You are given the following code snippet:
+
+```{.cpp code-line-numbers="true"}
+#include <iostream>
+#include <string>
+
+class Student {
+private:
+    std::string name;
+    mutable int access_count { 0 };
+
+public:
+    Student(std::string name) : name {name} {}
+
+    // A: Returns the name
+    std::string get_name() const { 
+        access_count++; 
+        return name; 
+    }
+
+    // B: Sets a new name
+    void set_name(std::string name) { 
+        this->name = name; 
+    }
+};
+
+int main() {
+    Student std_01 {"Tony Stark"};
+    const Student std_02 {"Hulk"};
+
+    // Line 1: Pointer to a constant Student
+    const Student* ptr = &std_01;
+    ptr->set_name("New Name");
+
+    // Line 2: Constant pointer to a Student
+    Student* const cptr = &std_02;
+    cptr->set_name("New Name");
+
+    // Line 3: Method call
+    std::cout << std_02.get_name() << " accessed " << std::endl;
+
+    return 0;
+}
+```
+
+**Question**
+
+1. **Analyze Line 1 and Line 2**: Both lines will cause a compilation error. Explain the difference between `const Student*` and `Student* const` and why each specific line fails.
+2. **Analyze Method A** (`get_name`): Even though this method is marked `const`, it modifies `access_count`. Explain why this code **will** compile and what the `mutable` keyword achieves in this context. What happens if we remove `mutable`?
+3. **Analyze Line 3**: If the `const` qualifier were removed from the declaration of `get_name()`. Line 3 would fail to compile. Explain why a `const` object like `std_02` can only call `const` member functions.
+
+
+### Answer (b)
+
+1. Task 1 (poitners): In C++, we should read pointer declarations from **right to left**. This tells us exactly what the `const` is "locking".
+
+    - Consider `const Student* ptr`:
+        - Read right-to-left: `ptr` is a pointer to a Student that is const.
+        - Meaning: We can move the pointer to a different student, but we cannot change the data of the student it's currently pointing to. The "Data" is frozen.
+
+    [Coming back to `const Student* ptr`]{style="color:brown"}: This is **a pointer to a constant**. The pointer can point to another student (also a const), but it cannot change the data it poitns to. `set_name` is a non-const function, so it's forbidden.
+
+    - Consider `Student* const cptr`
+
+        - Read right-to-left: `cptr` is a *const pointer* to a Student.
+        - Meaning: The pointer itself is stuck. We can change the data of the student it points to, but we can never poit it to someone else (another student). The "Address" is frozen. 
+
+    [Coming back to `Student* const cptr`]{style="color:brown"}: This is a **constant pointer**. We cannot change where `cptr` points to (after initialization), but the Student object `cptr` points to can (ordinarily) change its data. However, since `std_02` is declared `const`, a non-const pointer cannot point to it.
+
+2. Task 2 (`mutable`): Coming back to `*Student* const cptr`Since we have not studied `mutable`, this mock question is for your knowlege -- no real question on this keyword.
+
+    - `mutable` allows a member variale to be modified even within a `const` member function. This is used for "logical const-ness" (e.g. caching, debugging, or access counters) where the visible state of the object does not change.
+
+3. Task 3 (**const objects**):
+
+    - A `const` object represents a contract that the object's state will not change. Therefore, the compiler only permits calls to member functions that have explicitly promised not to modify the object via the `const` suffix.
+
+### Question (c)
+
+You are given the following code snippet:
+
+```{.cpp code-line-numbers="true"}
+#include <iostream>
+#include <string>
+
+// --- Write your Function Template here ---
+
+
+// -----------------------------------------
+
+struct Box {
+    int volume;
+    // Overloading the > operator for Box comparison
+    bool operator>(const Box& other) const {
+        return volume > other.volume;
+    }
+};
+
+int main() {
+    // Test Case 1: Integers
+    int a { 10 }, b { 20 };
+    std::cout << "Max int: " << find_max(a, b) << '\n';
+
+    // Test Case 2: Strings
+    std::string str_01 { "Apple" }, str_02 { "Zebra" };
+    std::cout << "Max string: " << find_max(str_01, str_02) << '\n';
+
+    // Test Case 3: Custom Objects
+    Box box_01 { 500 }, box_02 { 1000 };
+    Box biggest = find_max(box_01, box_02);
+    std::cout << "Max Box volume: " << biggest.volume << '\n';
+
+    return 0;
+}
+```
+
+**Question**
+
+1. Write the full definition of the function template `find_max`. It should take two parameters of the same template type by reference to const and return the result by value.
+2. In **Test Case 3**, the code compiles because the `Box` structure has overloaded `operator>`. If this operator was **not** overloaded, what specific error would the compiler generate when trying to instatiate the template?
+3. If the function was called as `find_max(10, 3.14)`, the compiler would fail to deduce the template argument. Eplain why this happens and provide two ways a developer could fix the call in `main()` witout changing the template definition.
+
+### Answer (c)
+
+1. Template implementation:
+
+    ```{.cpp}
+    template <typename T>
+    T find_max(const T& x, const T& y) {
+        return (x > y) ? x : y;
+    }
+    ```
+
+2. Mising operator:
+
+    - The compiler would throw an error stating that `operator>` is not defined for the type `Box`.
+    - Key concept: The student should mention that template requirements (concepts) are checked **at the time of instatiation**, not definition.
+
+3. Ambiguous Deduction:
+
+    - Why: `10` is an `int` and `3.14` is a `double`. The compiler cannot decide if `T` should be `int` or `double` because the template expects both parameters cannot be the exact same type `T`.
+
+    - Fix Option 1 (explicit instantiation):
+
+        ```{.cpp}
+        find_max<double>(10, 3.14);
+        ```
+
+    - Fix Option 2 (Casting): 
+
+        ```{.cpp}
+        find_max(static_cast<double>(10), 3.14);
+        ```
+
+### Question (d)
+
+You are given the following code snippet
+
+```{.cpp code-line-numbers="true"}
+#include <iostream>
+#include <string>
+
+class Payment {
+public:
+    void identify() { 
+        std::cout << "Standard Payment" << std::endl; 
+    }
+    virtual void process() { 
+        std::cout << "Processing generic payment..." << std::endl; 
+    }
+    virtual ~Payment() = default;
+};
+
+class CreditCard : public Payment {
+public:
+    void identify() { 
+        std::cout << "Credit Card" << std::endl; 
+    }
+    void process() override { 
+        std::cout << "Processing credit card via secure gateway..." << std::endl; 
+    }
+};
+
+int main() {
+    Payment* payment_ptr = new CreditCard();
+    CreditCard* credit_ptr = new CreditCard();
+
+    std::cout << "1: "; payment_ptr->identify();
+    std::cout << "2: "; payment_ptr->process();
+    
+    std::cout << "3: "; credit_ptr->identify();
+    
+    delete payment_ptr;
+    delete credit_ptr;
+
+    return 0;
+}
+```
+
+**Question**
+
+1. **Predict the output**: Write down the exact console output for the liens marked `1`, `2`, and `3`.
+2. **Explain the difference**: Why does `payment_ptr->identify()` produce a different result style compared to `payment_ptr->process()`? Explain the role of virtual table in your answer.
+3. The `override` keyword: In the `CreditCard` class, the `process` function uses the `override` keyword. Explain one specific benefit of using this keyword for a developer.
+4. The Destructor: In the `Payment` class, the destructor is marked `virtual`. What would happen if we removed the `virtual keyword` and executed `delete payment_ptr`?
+
+### Answer (d)
+
+1. The output on the console
+
+    ```{.cpp}
+    Standard Payment
+    Processing credit card via secure gateway...
+    Credit Card
+    ```
+
+    Explanation:
+    - `Standard Payment` -- static binding uses pointer type
+    - `Processing credit card via secure gateway...` -- Dynamic binding uses the actual object type
+    - `Credit Card` -- static binding on a derived pointer
+
+2. Virtual Table explanation
+
+    - `indentify()` is a non-virtual function. The compiler uses **static binding**, meaning it looks at the type of the point (`Payment*`) at **compile-time**.
+    - `process()` is a virtual function. The compiler uses **dynamic binding**. At **runtime**, the program follows the object's internal **vpointer** (**v** stands for virtual) to the **vtable**, which points to the `CreditCard` implementation.
+
+3. Override benefit
+    
+    - It provides a compiler check. If the signature in the derived class does not exactly match a virtual function in the base class (e.g., a typo in the name or a missing `const`), the compiler will trigger an error instead of silently creating a new function.
+
+4. Virtual destructor: We have not learned this in the lectures, so don't worry! I explain here for your knowledge.
+
+    - If the destructor is not virtual, deleting a `Derived` object through a `Base*` results in **undefined behavior**. Usually, only the `Base` part of the object is destroyed, leading to a memory leak if the `Derived` class allocated its own resources.
+
+## Question 2: Writing C++ 
+
+
+### Problem description 
+
+In mathematics, a complex number is an element of a number system that extends the real numbers with specific element denoted '$\mathrm{i}$', called the imaginary unit and satisfying the equation $\mathrm{i}^2 = -1$ (or equivalently $\mathrm{i} = \sqrt{-1}$). Every complex number $z$ can be expressed in the form $z = a + b \mathrm{i}$, where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are real numbers. Two complex numbers $z_1 = a_1 + b_1 \mathrm{i}$ and $z_2 = a_2 + b_2 \mathrm{i}$ are added according to the rule 
+
+$$
+z_1 + z_2 = (a_1 + a_2) + (b_1 + b_2) \mathrm{i}
+$$
+
+and multiplied by each other according to the rule 
+
+$$
+z_1 \cdot z_2 = (a_1 \cdot a_2 - b_1 \cdot b_2) + (a_1 \cdot b_2 + a_2 \cdot b_1) \mathrm{i}.
+$$ 
+
+**Your task is to write C++ code** to define a class **`ComplexNumber`**, its data members, member functions, and non-member functions (if there are) to reflect the above description.
+
+1. Write code to define the class **`ComplexNumber`** with two private data members, named **`re`** and **`im`**. 
+
+2. Write a constructor receiving two input arguments **`re`** and **`im`** with default value $0$ to initialize the data members described in (a). Use list initialization (not the assignment statements) to initialize these data members. 
+
+3. Write a function overloading the operator **`<<`** of the object **`std::ostream`** so that the statement "`std::cout << comp_num;`" works for the **`ComplexNumber`** object **`comp_num`**. You must decide the print-out format that makes sense to the user. For example, consider the following numbers: $1 + 0\,\mathrm{i} = 1$ and $0 + 2\,\mathrm{i} = 2\,\mathrm{i}$.
+
+4. Write functions to overload the operator **`+`** (plus sign) and the operator **`*`** (multiplication sign) to reflect the addition and multiplication of two complex numbers, respectively. Essentially, the following statements should work after overloading the operators **`<<`**, **`+`** and **`*`** for the complex numbers:
+
+
+   ```{.cpp}
+   std::cout << a + b;
+   std::cout << a * b;
+   ```
+
+5. Write a member function with name `pow` to compute the power $z^{n}$ of the complex number $z$ with $n$ being a non-negative integer. Recall that
+
+   $$
+   z^{0} = 1,\quad z^{1} = z, \quad z^{2} = z \cdot z, \quad z^{3} = z\cdot z \cdot z, \quad z^{n} = \underbrace{z \cdot \cdots \cdot z}_{n \text{ terms}}.
+   $$
+
+6. Write a function to overload the assignment operator `=` for a `ComplexNumber` object so that the following statement works:
+
+   ```{.cpp}
+   c = a + b;  // a, b, c are all ComplexNumber objects
+   ```
+   
+
+7. Write a class **`RealNumber`** derived from the class **`ComplexNumber`** you have defined above. The class **`RealNumber`** must have a constructor receiving one `double` number and make sure that the imaginary part derived from the parent class is equal to zero.
+
+8. Write a **main** function to perform the following tasks:
+    * Create an array of five **`ComplexNumber`** elements using dynamic memory allocation with a pointer to **`ComplexNumber`**. Remember to clean up the memory when you do not need the array anymore.
+    * Initialize these five complex numbers using the `for`-loop to obtain five numbers (note the pattern of the real parts and imaginary parts of these numbers):
+    
+      $$
+      z_{1} = 1 + 2\,\mathrm{i},\quad  z_{2} = 2 + 3\,\mathrm{i}, \quad z_3 = 3 + 4\,\mathrm{i}, \quad z_4 = 4 + 5\,\mathrm{i}, \quad z_5 = 5 + 6\,\mathrm{i}.
+      $$
+      
+    * Compute the sum $\displaystyle s = \sum\limits_{j=1}^{5} z_{j}$ of these five numbers using the `for`-loop and print the resulted sum $s$ to the console.
+    * With $z = 1 + 2\,\mathrm{i}$, compute the expression
+    
+      $$\Lambda = 1 + z + z^2 + z^3 + z^4 + z^5$$
+      
+      using the `for`-loop.
+
+    *Note that you can write any helper functions that are not defined by answering the above questions to complete the* **main** *function and other functions.* **[9 marks]**
+
+    **Hint**: `static_cast<double>(42)` will convert the integer $42$ into the double $42.0$.
+
+### Answer in Code
+
+```{.cpp code-line-numbers="true"}
+#include <iostream>
+#include <cmath>
+
+class ComplexNumber {
+private:
+    double re;
+    double im;
+
+public:
+    // Constructor with list initialization and default values
+    ComplexNumber(double r = 0, double i = 0) : re(r), im(i) {}
+
+    // Overloading the assignment operator
+    ComplexNumber& operator=(const ComplexNumber& other) {
+        if (this != &other) {
+            re = other.re;
+            im = other.im;
+        }
+        return *this;
+    }
+
+    // Overloading the + operator
+    ComplexNumber operator+(const ComplexNumber& other) const {
+        return ComplexNumber(re + other.re, im + other.im);
+    }
+
+    // Overloading the * operator
+    ComplexNumber operator*(const ComplexNumber& other) const {
+        double new_re = (re * other.re) - (im * other.im);
+        double new_im = (re * other.im) + (im * other.re);
+        return ComplexNumber(new_re, new_im);
+    }
+
+    // Power function z^n
+    ComplexNumber pow(int n) const {
+        ComplexNumber result(1, 0); // z^0 = 1
+        for (int i = 0; i < n; ++i) {
+            result = result * (*this);
+        }
+        return result;
+    }
+
+    // Friend function to overload << for ostream
+    friend std::ostream& operator<<(std::ostream& os, const ComplexNumber& cn) {
+        if (cn.re != 0 && cn.im > 0) {
+            os << cn.re << " + " << cn.im << "i";
+        } else if (cn.re != 0 && cn.im < 0) {
+            os << cn.re << " - " << std::abs(cn.im) << "i";
+        } else if (cn.re == 0 && cn.im != 0) {
+            os << cn.im << "i";
+        } else {
+            os << cn.re;
+        }
+        return os;
+    }
+};
+
+// Derived class RealNumber
+class RealNumber : public ComplexNumber {
+public:
+    RealNumber(double r) : ComplexNumber(r, 0) {}
+};
+
+int main() {
+    // Dynamic allocation of an array of 5 ComplexNumber objects
+    ComplexNumber* z_array = new ComplexNumber[5];
+
+    // Initialize using for-loop
+    // Pattern: z_j = j + (j+1)i
+    for (int j = 0; j < 5; ++j) {
+        double r = static_cast<double>(j + 1);
+        double i = static_cast<double>(j + 2);
+        z_array[j] = ComplexNumber(r, i);
+    }
+
+    // Compute sum s = Σ z_j
+    ComplexNumber s(0, 0);
+    for (int j = 0; j < 5; ++j) {
+        s = s + z_array[j];
+    }
+    std::cout << "Sum s = " << s << std::endl;
+
+    // Compute Λ = 1 + z + z^2 + z^3 + z^4 + z^5 for z = 1 + 2i
+    ComplexNumber z(1, 2);
+    ComplexNumber lambda(0, 0);
+    for (int n = 0; n <= 5; ++n) {
+        lambda = lambda + z.pow(n);
+    }
+    std::cout << "Lambda = " << lambda << std::endl;
+
+    // Clean up dynamic memory
+    delete[] z_array;
+
+    return 0;
+}
+```
+
+## Question 3: UML Class Diagram
+
+### Problem description
+Assume that we want to plot basic shapes such as **Polygon**, **Rectangle**, **Square**, **Ellipse**, **Circle**.
+
+Your task is to design and draw a UML class diagram for 7 classes described below (**bold-faced words**) so that they incorporate the following features:
+
+- A **Point** in 2-dimensional space has coordinates $x$ and $y$. 
+- A **Polygon** receives a list of points of data type **Point** just defined above. A **Polygon** must have at least 3 points to constitute a proper **Polygon**. 
+- A **Rectangle** is a **Polygon**. A **Rectangle** receives a **Point** for its bottom-left [corner]{style="color:red"}, two real values for its [width]{style="color:red"} $w$ and [height]{style="color:red"} $h$ and one real value $\theta$ for its inclination angle measuring the positive smallest angle that one edge makes with the positive $x$-axis, measured counterclockwise.
+- A **Square** is a **Rectangle** with the width being equal to the height.
+- An **Ellipse** receives a **Point** for its [center]{style="color:red"}, two real values for its [width]{style="color:red"} $w$ and [height]{style="color:red"} $h$ and an [angle inclination]{style="color:red"} $\theta$ measuring the positive smallest angle that one axis makes with the positive $x$-axis, measured counterclockwise.
+- A **Circle** is an **Ellipse** with the same width and height, which is the [radius]{style="color:red"} $r = w = h$.
+- Clearly, all the above-mentioned basic shapes are **Shape**.
+- External users cannot access data of a **Polygon** object, a **Rectangle** object, a **Square** object, an **Ellipse** object and a **Circle** object directly. External users can access coordinates directly. External users can use all the member functions of these objects.
+- As we do not know any specific information about a general shape, we cannot draw it or store any data on it. However, it is conceptually important to tell the program that any specific **Shape** should be able to draw itself. For this reason, there must be a constraint that any (basic) shapes must have a member function (or method) `draw()` for them.
+
+**Tasks to perform:**
+
+1. Draw 7 classes with their relevant data members and methods. 
+2. Decide appropriate access specifiers (or access modifiers) of the variables and methods. 
+3. Decide the data types for data members, data types for input arguments and returns of member functions in each class and present them in the class diagram. 
+4. Decide the association relationships such as composition, aggregation, association between these classes. Express these relationships by the appropriate connections.
+5. Decide the relationship cardinalities between Point and the classes that have association with Point, and show them on the diagram. 
+6. How do you enforce the "is a" relationship as described in the above problem description? Answer in words and show that in the diagram. 
+7. How do you enforce the condition that every basic shape, as described above, must have the method `draw()`? Answer in words and show that in the diagram.
+
+### Answer
+
+This answer is generated by using `mermaid` with quarto.
+
+```{mermaid}
+classDiagram
+    direction BT
+
+    %% Task 1, 2, 3: Classes, Data types, and Access Modifiers
+    class Shape {
+        <<abstract>>
+        +draw()* void
+    }
+
+    class Point {
+        +double x
+        +double y
+        +Point(double x, double y)
+    }
+
+    class Polygon {
+        -vector~Point~ points
+        +Polygon(vector~Point~ pts)
+        +draw() void
+    }
+
+    class Rectangle {
+        -Point bottom_left
+        -double w
+        -double h
+        -double theta
+        +Rectangle(Point bl, double w, double h, double theta)
+        +draw() void
+    }
+
+    class Square {
+        +Square(Point bl, double side, double theta)
+        +draw() void
+    }
+
+    class Ellipse {
+        -Point center
+        -double w
+        -double h
+        -double theta
+        +Ellipse(Point c, double w, double h, double theta)
+        +draw() void
+    }
+
+    class Circle {
+        +Circle(Point c, double r, double theta)
+        +draw() void
+    }
+
+    %% Realization (Dashed) for implementing an Abstract Interface
+    Polygon ..|> Shape
+    Ellipse ..|> Shape
+
+    %% Generalization (Solid) for class inheritance
+    Rectangle --|> Polygon
+    Square --|> Rectangle
+    Circle --|> Ellipse
+
+    %% Task 4 & 5: Association/Composition and Cardinalities
+    %% A Polygon contains 3 or more Points
+    Polygon "1" *-- "3..*" Point : contains
+    
+    %% Rectangle and Ellipse use a Point for positioning
+    Rectangle "1" *-- "1" Point : located at
+    Ellipse "1" *-- "1" Point : centered at
+```

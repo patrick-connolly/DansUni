@@ -18,9 +18,9 @@ This file only throws the errors, our test.cpp files actually uses try{}catch{}
 ========LOGISTIC REGRESSION=======
 =================================
 
-Two "backend" calculation algorithms are implemented into this class, as per the assignment:
+Two "backend" calculation algorithms were implemented separetely by multiple members and imported:
 Binary classification 
-Multiclass classification
+Multiclass classification 
 
 =================================
 ========VECTOR STRUCTURES========
@@ -38,10 +38,12 @@ The fit() function decides which one to use based on the number of unique y valu
 The fit function is the main training function which takes in a Dataset object and trains the model based on the X and y values. 
 The gradient descent method is implemented as the main training algoritm.
 
+===
 Prediction API is based on the sklearn API, so we have separated the predict functions into three which may be called separately 
 -> like the real library, but the predict() is the main user interface:
+===
 
-1. decision_function() -> returns the raw y prediction values before the sigmoid for BINARY; returns the raw scores for MULTICLASS
+1. decision_function() -> returns the raw y predi  ction values before the sigmoid for BINARY; returns the raw scores for MULTICLASS
 2. predict_proba() -> returns predicted probabilities:
    - binary: probability of the class as [sample][0] (because binary only has one positive class (is or is not the class) so only uses first row of the inner)
    - multiclass: full probability vector [sample][class]
@@ -52,7 +54,7 @@ Prediction API is based on the sklearn API, so we have separated the predict fun
 5. accuracy_score() -? uses the internal predict() member function and the given loaded Y values to generate the predicted Y values, and outputs an accuracy score in percent
 6. load() -> requires an input array for of weights and biases and loads them as the current weights 
           -> Can run the model once, use the getters to output the trained weights and use them to create a trained model instance in another program.
-7. Get helpers -> useful when wanting to export or otherwise use the internal weights, biases, labels and loss
+7. Get helpers -> useful when wanting to export or otherwise use the internal weights, biases, labels, and loss
 */
 
 namespace sklearn_cpp {
@@ -61,7 +63,7 @@ namespace linear_model {
 class LogisticRegression {
 
     private:
-        //These are the learnable parameters -> weights has to be a vector to enable using multi-feature datasets
+        //These are the learnable parameters -> weights has to be a double vector to enable using multi-feature datasets
         std::vector<std::vector<double>> weights; // stores the weights per class, per feature -> [class][feature] (binary is going to use [0][i])
         std::vector<double> biases;               // [class]
         std::vector<int> class_labels; // original labels
@@ -82,7 +84,7 @@ class LogisticRegression {
         };
 
         //default to NOT_FIT, will be changed in fit function 
-        //essentially acts as a check if a user tries to predict using an unfitted models
+        //essentially acts as a check if a user tries to predict using an unfitted model
         MODE current_mode = MODE::NOT_FIT; 
 
         /*
@@ -299,7 +301,7 @@ class LogisticRegression {
 
             }
 
-            //Multiclass implementation
+            //Multiclass implementation (if not MODE::BINARY)
             else {
                 //these are used in the gradient descent calculation and loops
                 const size_t m = data.X.size();
@@ -477,7 +479,7 @@ class LogisticRegression {
                 return y_prediction_rows;
             }
 
-            //Multiclass implementation
+            //Multiclass implementation (if not MODE::BINARY)
             else {
 
                 //loop over all X rows
@@ -538,7 +540,7 @@ class LogisticRegression {
 
             }
 
-            //Multiclass implementation
+            //Multiclass implementation (if not MODE::BINARY)
             else {
                 for (const auto& row : decision_values) {
 
@@ -601,7 +603,7 @@ class LogisticRegression {
                 return class_predictions;
             }
 
-            //Multiclass implementation
+            //Multiclass implementation (if not MODE::BINARY)
             else {
                 //Calculate the raw scores for every class and every sample -> use decision_function and receive the nested vector
                 std::vector<std::vector<double>> scores = decision_function(X);
@@ -663,11 +665,11 @@ class LogisticRegression {
 
             }
 
-            //Multiclass implementation
+            //Multiclass implementation (if not MODE::BINARY)
             else {
                 std::vector<int> class_predictions = predict(data.X);
 
-                for (int class_pred : class_predictions) {
+                for (const int class_pred : class_predictions) {
                     data.y.push_back((double)class_pred);
                 }
             }
@@ -730,8 +732,7 @@ class LogisticRegression {
             else {
                 this->current_mode = MODE::MULTICLASS;
             }
-
-            
+  
         }
 
         /*

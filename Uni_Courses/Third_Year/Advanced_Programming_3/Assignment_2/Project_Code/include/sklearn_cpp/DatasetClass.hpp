@@ -6,6 +6,21 @@
 #include <cmath>
 #include <string>
 
+/*
+
+We use the Dataset class, which is fully public, to internally encapsulate all the data passes into one single class
+instead of multiple vectors for X values, Y values and potentially headers, etc.
+
+While redundant, this fully public class makes it easier for the user to interact with both the model as well as the CSV reader
+
+Being public also fully allows users to create and edit their own Dataset without set() or get() functions being necessary
+
+This class is mainly an easy interface between the raw data and our models. 
+
+The Dataset is easy to create from raw values, given the constructors below, but our regression models work with raw vectors too.
+
+*/
+
 namespace sklearn_cpp {
 
 class Dataset {
@@ -69,6 +84,9 @@ class Dataset {
 
         //default contructor (empty) - just in case
         Dataset() = default;
+
+        //This constructor allows a user to explicitly create a Dataset object from raw X and y values
+        Dataset(std::vector<std::vector<double>> X, std::vector<double> y) : X(X), y(y) {}
 
         //useful print function -> also prints headers if its not empty (which it is by default)
         void print() const {  

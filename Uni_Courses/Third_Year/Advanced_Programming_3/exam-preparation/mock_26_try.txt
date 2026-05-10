@@ -1,0 +1,192 @@
+#include <iostream>
+
+// 1. Increments the value of 'n' by 10 using a pointer.
+void increment_by_pointer(int* ptr) {
+    *ptr += 10;
+}
+
+// 2. Doubles the value of 'n' using a reference.
+void double_by_reference(int& ref) {
+    ref *= 2;
+}
+
+// 3. Swaps the address held by two pointers (Pointer to Pointer).
+// Note: This should change where the pointers in main point to.
+void swap_pointers(int** ptr1, int** ptr2) {
+    int* temp{*ptr1};
+    *ptr1 = *ptr2;
+    *ptr2 = temp;
+}
+
+int main() {
+    int a { 5 };
+    int b { 50 };
+    
+    int* pA { &a };
+    int* pB { &b };
+
+    void increment_by_pointer(pA);
+
+    void double_by_reference(b);
+
+    swap_pointers(pA, pB);
+
+    // Task 1: Use increment_by_pointer to make 'a' equal to 15.
+    // Task 2: Use double_by_reference to make 'b' equal to 100.
+    // Task 3: Use swap_pointers so that pA points to 'b' and pB points to 'a'.
+
+    return 0;
+}
+Question b
+
+Line 1 fails because the std_01 Student object is not constant, meaning when set_name() tries to run it attemps running a non-const method on a const object.
+Line 2 specifies a constant pointer to a non-const object. This would be fine, however, since std_02 is declared a const Student object, we cannot declare a pointer to a const object as not-const object.
+    For Line 2 to work, it would need to look like: const Student* const cptr = &std_02;
+        AKA a constant pointer (pointer can only point to that object) pointing to a constant Student object (the object cannot be changed through this pointer)
+
+mutable allows for changes to be made even if the function making the changes is constant. If the mutable specifier was removed, the function would no longer compile.
+
+Objects created with const can only call methods which are also marked const. Even if the function doesn't alter the object, the compiler doesn't know that, menaing it won't allow a non-const function to potential change a const object.
+
+=======================
+QUESTION C
+=======================
+
+template<typename T>
+T find_max(const &T box1, const &T box2) {
+    if(box1 > box2) {
+        return box1;
+    }
+    else
+        return box2;
+}
+
+2. operator> is not defined for the type Box
+
+3. method 1: static_cast<double> on both parameters to make them both doubles 
+   method 2: call the function as find_max<double> which promotes both numbers to doubles
+
+=======================
+QUESTION D
+=======================
+
+1: Standard Payment
+2: Processing credit card via secure gateway...
+3: Credit Card
+
+NORMAL FUNCTIONS USE WHAT'S CALLED STATIC BINDING
+VIRTUAL FUNCTIONS USE DYNAMIC BINDING (AT RUNTIME) TO RESOLVE THE FUNCTION
+
+2. payment_ptr points to a CreditCard object, however, it is a Payment type. 
+    Therefore, for identify(), which is a normal method, is called using the Payment definition.
+    However, because process() is a virtual method, it resolves to the derived override version, even if the pointer type is the base class.
+
+3. override means that this definition is supposed to override is previously defined method in a base class. 
+   This keyword ensures that the derived class' function is correctly override a base method, and not simply creating another function, 
+   which helps developers know that the method signature is the same.
+
+4. Virtual means it resolves to the most derived definition. In this case, even when the payment_ptr deletes the object on the heap, the CreditCard destructor is called to destroy the CreditCard object.
+   If the destructor was not virtual, the Payment destructor would be called on a CreditCard object, which could lead to a memmory leak from non-destroyed CreditCard member variables.
+
+
+=======================
+QUESTION 2
+=======================
+
+
+class ComplexNumber {
+
+    private:
+        double re{};
+        double im{};
+    
+    public:
+        ComplexNumber(double re = 0, double im = 0) : re(re), im(im) {}
+
+        friend os::stream& operator<<(std::ostream& out, const ComplexNumber& num) {
+            if(num.re == 0 && num.im == 0) {
+                out << 0;
+            }
+            else if(num.re == 0 && num.im != 0) {
+                out << num.im << "i";
+            }
+            else if(num.re != 0 && num.im == 0) {
+                out << num.re;
+            }
+            else if(num.im > 0){
+                out << num.re << " + " << num.im << "i"; 
+            }
+            else {
+                out << num.re << " - " << -num.im << "i"; 
+            }
+
+            return out;
+        }
+
+        friend ComplexNumber operator+(const ComplexNumber& n1, const ComplexNumber& n2) {
+            return { ComplexNumber( (n1.re + n2.re), (n1.im + n2.im) ) };
+        } 
+
+        friend ComplexNumber operator*(const ComplexNumber& n1, const ComplexNumber& n2) {
+            double real = n1.re*n2.re - n1.im*n2.im;
+            double im = n1.re*n2.im + n1.im*n2.re;
+            return { ComplexNumber( (real), (im) ) };
+        } 
+
+        ComplexNumber pow(int n) {
+            if(n == 0) {
+                return { ComplexNumber(1,0)};
+            }
+
+            for(int i = 0; i < n; i++) {
+                *this = *this * (*this);
+            }
+
+            return *this;
+        }
+
+        ComplexNumber& operator=(const ComplexNumber& num) {
+            this->re = num.re;
+            this->im = num.im;
+            return *this;
+        }
+
+};
+
+
+class RealNumber : public ComplexNumber {
+
+    public:
+        RealNumber(double re) : ComplexNumber(re, 0) {}
+};
+
+int main() {
+
+    ComplexNumber* nums {new ComplexNumber[5]};
+
+    for(int i = 0; i < 5, i++) {
+        nums[i] = ComplexNumber(i+1, i+2);
+    }
+
+    ComplexNumber result;
+
+    for(int i = 0; i < 5, i++) {
+        result += nums[i];
+    }
+
+    std::cout << "Sum is: " << result << std::endl;
+
+    ComplexNumber power(1,2);
+
+    ComplexNumber lambda;
+
+    for(int i = 0; i < 6, i++) {
+        lambda += power.pow(i);
+    }
+
+    std::cout << "Lambda is: " << lambda << std::endl;
+
+    delete[] nums;
+
+    return 0;
+}
