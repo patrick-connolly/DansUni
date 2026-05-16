@@ -1,0 +1,265 @@
+Exercise 1:
+
+*ptr += 7; 
+
+ref *= 4; 
+
+int* temp = *ptr1;
+*ptr1 = *ptr2;
+*ptr2 = temp;
+
+add_seven(pA);
+multiply_by_four(b);
+swap_pointer_targets(&pA, &pB);
+
+Exercise 2:
+
+1. ptrA is a pointer to a constant Counter object. It is initializd to point at the c1 object.
+The pointer is not marked constant but the object is. 
+
+2. ptrB is a constant pointer to a Counter object. 
+It is initialized to point at c1.
+The object is not marked constant but the pointer is.
+
+3. 
+
+A: fails because ptrA is pointer to a constant Counter object so set_value cannot run.
+B: This can run
+C: This can run, c2 is constant but get_name is also marked constant
+D: This cannot run because ptrB is a constant pointer so it cannot be reasigned.
+
+Exercise 3:
+
+template<typename T>
+
+T find_max(const T& t1, const T& t2) {
+    return (t1 > t2) ? t1 : t2;
+}
+
+2. Because Box overloads the > operator
+
+3. The find_max(box1, box2); call would be flagged by the compiler, sa the Box type does not recognize the > operator.
+so error is: type Box does not implement operator>.
+
+4. Because find_max only implements a version in which both arguments are the same type.
+
+5. find_max<double>(10, 3.14) or find_max(static_cast<double>(10), 3.14)
+
+Exercise 4:
+
+1. 
+Generic animal
+Woof
+Dog animal
+
+2. because it uses staic binding, as the identify is not virtual. So the compiler resolves the call at compile time to the pointer class implementation.
+
+3. This uses dynamic binding because speak() is virtual so the compiler uses the internal vpointer to resolve the call to the most derived virtual implementaiton.
+
+4. override ensures that the function definition is correctly overriding a previously defined function
+
+5. so even a Base class pointer to a Derived class would correctly call the Derived class' destruction.
+
+Exercise 5:
+
+1. Yes, the print_task needs a task object.
+
+2. it would NOT compile as the unique_ptr cannot be passed by value
+
+3. wrap the call in std::move(t1)
+
+4. still the same as complete task does not change the task state, it only calls get_description.
+
+5. no, because t1 no longer has ownership of the Task object, the complete_task does, so t1 is a dangling pointer.
+
+6. 
+
+7. 
+Task: Submit coursework
+Completed: Submit coursework
+Submit coursework
+
+Exercise 6:
+
+1. it copies s1 internally and increments the copy, the original is intact.
+
+2. it increments the actual s1 variable by reference. 
+
+3. it's faster as print_score() doens't change anything so passing by constant reference avoids copying.
+
+4. It returns the actual parameter object. So it works as a sort of resolver for the actual objects being passes and can be changed with other functions which will then alter the original objects.
+
+5. it chooses the higher object in this case s2, and because choose_higher returns by reference, add_pointer then adds 5 to the point member of s2.
+
+6. 
+Alice: 50
+Alice: 60
+Alice: 60
+Bob: 85
+
+7. It returns by refernce an internal variable. However, an internal variable is destroyed when the function is exited so the function returns a dangling reference to a destroyed object. 
+
+Exercise 7:
+
+1. : room(room), temperature(temperature)
+
+2. return this->room;
+
+3. return this->temperature;
+
+4. this->temperature = temperature;
+
+5. 
+this->temperature += amount;
+return *this;
+
+6.
+Kitchen: 23.5
+Bedroom: 16.0
+
+Exercise 8:
+
+1.
+int get_pence() const {
+    return pence;
+}
+
+2.
+Money operator+(const Money& m) const {
+    return Money(pence+m.pence)
+}
+
+3.
+Money& operator=(const Money& m) {
+    pence = m.pence;
+    return *this;
+}
+
+4.
+friend std::ostream& operator<<(std::ostream& out, const Money& m);
+
+std::ostream& operator<<(std::ostream& out, const Money& m)
+ {
+    if(m.pence < 0) {
+        out << "-£" << std::abs(m.pence) / 100 << "." << std::abs(pence) % 100;
+    }
+    else {
+        out << "£" << std::abs(m.pence) / 100 << "." << std::abs(pence) % 100;
+    }
+
+    return out;
+ }
+
+5.
+£12.50
+£0.75
+-£3.20
+£13.25
+
+Exercise 9:
+
+1.
+virtual double read_value() = 0;
+
+2.
+double read_value() override {
+    return temperature;
+}
+
+3.
+double read_value() override {
+    return pressure;
+}
+
+4.
+because it constains a pure virtual member function
+
+5.
+no, because abstract function cannot be instantiated due to the lack of a pure virtual function implementation
+
+6. 
+because read_value is a virtual function so the compiler uses dynamic binding to reslve the call to the derived classes implementation
+
+7.
+Engine temperature: 95.5
+Tyre pressure: 32.0
+
+Exercise 10:
+
+Mark* ptr {new Mark[4]};
+
+for(int i{0}; i<4; i++) {
+    ptr[i] = Mark(static_cast<double>(50 + 10*i) );
+}
+
+double sum;
+
+for(int i{0}; i<4; i++) {
+    sum += ptr[i].get_value();
+}
+
+std::cout << "Average = " << sum;
+
+delete[] ptr;
+
+Exercise 11:
+
+template<typename T>
+
+class Pair {
+    private:
+        T first;
+        T second;
+
+    public:
+
+        Pair(T first, T second) : first(first), second(second) {}
+
+        T get_first() const {
+            return first;
+        }
+
+        T get_second() const {
+            return second;
+        }
+
+        void swap_values() {
+            T temp = first;
+            first = second;
+            second = temp;
+        }
+};
+
+Exercise 12:
+
+int get_current() const {
+    return current;
+}
+
+int get_maximum() const {
+    return maximum;
+}
+
+Health operator+(const Health& other) const {
+    return Health( (current/maximum + (other.curent/other.maximum) * 100), maximum+other.maximum )
+}
+
+bool operator>(const Health& other) {
+    return ( (current/maximum) > (other.current/other.maximum)) ? true : false;
+}
+
+friend std::ostream& operator<<(std::ostream& out, const Health& other) const; 
+
+std::ostream& operator<<(std::ostream& out, const Health& other) const
+{
+    out << other.current << "/" other.maximum << "HP";
+
+    return out;
+}
+
+40/100 HP
+75/100 HP
+115/200 HP
+
+h2 is healthier
+
