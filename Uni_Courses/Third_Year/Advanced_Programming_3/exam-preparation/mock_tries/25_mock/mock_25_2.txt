@@ -1,0 +1,124 @@
+====================
+Question 2
+==================
+
+a,
+print_inc is type void -> it does not return a variable
+
+b, 
+the program prints:
+    1
+    1
+    2
+    3
+    4
+    5
+    6
+    7
+    8
+    9
+    10
+c,
+A unique_ptr represent sole ownership, meaning it cannot be copied. Shared_ptr can be copied
+
+d,
+The use count is two, because the integer used int print_inc is being pointed to by the original pointer, sip, as well as the internal copy s.
+
+e,
+the use count is one, because the shared_ptr is initialized directly in the function call, meaning there is only one copy of the internal s.
+
+f,
+The program fails to compile because print_inc takes the pointer by value, meaning it creates an internal copy, which a unique_ptr does not allow. 
+The print_inc would need to be pass by reference: void print_inc(const std::unique_ptr<int>& s)
+
+g,
+generally, unique ptr is prefered over shared_ptr, because a unique_ptr cannot be copied and the pointed to data cannot be accidentally altered through a different pointer.
+unique_ptr is also prefered over primitive pointers, because a unique_ptr can manage its own memory without needing delete; calls made, unlike primitive pointers.
+
+
+==============
+Question 3
+==============
+
+class Fraction {
+
+    private:
+        int nom;
+        int denom;
+
+    public:
+
+        Fraction(int nom = 0, int denom = 1) : nom(nom), denom(denom) {
+            if(denom == 0) {
+                std::cout << "Denominator cannot be zero. Setting to 1. \n";
+                this->denom = 1;
+            }
+        }
+
+        Fraction add(const Fraction& f2) {
+            int temp_num = nom*f2.denom + denom*f2.nom;
+            int temp_denum = denom * f2.denom;
+            return Fraction(temp_num, temp_denum);
+        }
+
+        Fraction mult(const Fraction& f2) {
+            return Fraction( nom*f2.nom , denom*f2.denom); 
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const Fraction& f) {
+            if(f.denom == 0) {
+                out << "0";
+            }
+            else if(f.denom == 1) {
+                out << f.nom;
+            }
+            else if( (f.nom < 0 && f.denom > 0) || (f.nom > 0 && f.denom < 0) ) {
+                out << "-" << std::abs(f.nom) << "/" << std::abs(f.denom);
+            }
+            else {
+                out << std::abs(f.nom) << "/" << std::abs(f.denom);
+            }
+
+            return out;
+        }
+
+        Fraction operator+(const Fraction& other) {
+            return (*this).add(other);
+        }
+
+        Fraction operator*(const Fraction& other) {
+            return (*this).mult(other);
+        }
+
+        Fraction& operator=(const Fraction& f) {
+            this->nom = f.nom;
+            this->denom = f.denom;
+            return *this;
+        }
+
+        Fraction reduce() {
+            int gcd = std::__gcd(nom, denom);
+
+            return Fraction( (this->nom) / gcd, (this->denom) / gcd );
+        }
+
+};
+
+int main() {
+
+    std::vector<Fraction> vect{};
+
+    for(int i{2}; i<7; i++) {
+        vect.push_back( Fraction (1,i) );
+    }
+
+    Fraction prod_result(1,1);
+    for(const Fraction& f : vect) {
+        prod_result = prod_result * f;
+    }
+
+    std::cout << "The product result is: " << prod_result << std::endl;
+
+    return 0;
+}
+

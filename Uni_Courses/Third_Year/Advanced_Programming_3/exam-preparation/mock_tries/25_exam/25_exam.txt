@@ -1,0 +1,118 @@
+=========
+Question 2
+==========
+
+
+a,
+first instance: 
+    return type: string object, parameters type: constant reference to a string object
+
+second instance:
+    return type: string object, parameter type: unique pointer to a string object, pass by value
+
+
+b,
+the function takes a unique_ptr by value, meaning it attempts to copy the unique_ptr to make an internal copy, but unique_ptr cannot be copied.
+A fix would be to pass the unique_ptr by reference and not by value:
+std::string make_polite(std::unique_ptr<std::string>& rude)
+
+c,
+I want coffee if you don't mind.
+I want tea if you don't mind.
+I want tea if you don't mind. 
+
+d,
+I want coffee if you don't mind.
+I want tea if you please.
+I want tea if you please. if you don't mind.
+
+
+=========
+Question 3
+==========
+
+class ComplexNumber {
+
+    private:
+        double re;
+        double im;
+
+    public:
+        ComplexNumber(double re = 0, double im = 0) : re(re), im(im) {}
+
+        ComplexNumber add(const ComplexNumber& num) {
+            return ComplexNumber( (this->re+num.re), (this->im+num.im))
+        }
+
+        ComplexNumber multiply_by_scalar(double num) {
+            return ComplexNumber( (this->re * num), (this->im * num));
+        }
+
+        ComplexNumber multiply_by(const ComplexNumber& num) {
+            double real = re*num.re - im*num.im;
+            double imag = re*num.im + im*num.re;
+            return ComplexNumber(real, imag);
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const ComplexNumber& num) {
+            if(num.im == 0 && num.re != 0) {
+                out << num.re;
+            }
+            else if(num.im != 0 && num.re == 0) {
+                out << num.im << "i";
+            }
+            else if(num.re == 0 && num.im == 0) {
+                out << "0";
+            }
+            else if(num.im < 0) {
+                out << num.re << " - " << std::abs(num.im) << "i";
+            }
+            else {
+                out << num.re << " + " << num.im << "i";
+            }
+
+            return out;
+        }
+
+        ComplexNumber operator+(const ComplexNumber& num) {
+            return this->add(num);
+        }
+
+        ComplexNumber operator*(const ComplexNumber& num) {
+            return this->multiply_by(num);
+        }
+
+        ComplexNumber& operator=(const ComplexNumber& num) {
+            this->re = num.re;
+            this->im = num.im;
+            return *this;
+        }
+
+};
+
+class RealNumber : public ComplexNumber {
+
+    public:
+        RealNumber(double re) : ComplexNumber(re, 0){};
+};
+
+int main() {
+
+    ComplexNumber* nums {new ComplexNumber[5]};
+    
+    for(int i{0}; i < 5, i++) {
+        nums[i] = ComplexNumber(i+1, i+2);
+    }
+
+    ComplexNumber sum;
+
+    for(int i{0}; i<5; i++) {
+        sum = sum + nums[i];
+    }
+
+    std::cout << "The sum of the numbers is: " << sum << std::endl;
+
+    delete[] nums;
+
+    return 0;
+}

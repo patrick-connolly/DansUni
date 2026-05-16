@@ -1,5 +1,5 @@
 ---
-title: "Assignment 02"
+title: "Mock Exam"
 subtitle: "C++ Object-oriented Programming"
 author:
     Khiem Nguyen 
@@ -29,22 +29,22 @@ format:
         toc-location: left      # table of content on the left
         toc-title: "Table of Content"   # table of content title
 
-    pdf:
-        code-line-numbers: false
-        output-file: "mock.pdf"
-        embed-resources: true
-        geometry:
-            - top=24px
-            - bottom=24px
-            - left=36px
-            - right=36px
-        css: style.css
-        number-sections: true
-        number-depth: 2
-        toc: true               # table of content
-        toc-location: left      # table of content on the left
-        toc-title: "Table of Content"   # table of content title
-        colorlinks: true
+    # pdf:
+    #     code-line-numbers: false
+    #     output-file: "mock.pdf"
+    #     embed-resources: true
+    #     geometry:
+    #         - top=24px
+    #         - bottom=24px
+    #         - left=36px
+    #         - right=36px
+    #     css: style.css
+    #     number-sections: true
+    #     number-depth: 2
+    #     toc: true               # table of content
+    #     toc-location: left      # table of content on the left
+    #     toc-title: "Table of Content"   # table of content title
+    #     colorlinks: true
 ---
 
 # Foreword
@@ -54,7 +54,7 @@ format:
 The real paper exam contains $3$ questions with the following grade distribution:
 
 | Question    | Grade  |
-|:------------|:-------|
+|:---|:--|
 | Q1: C++ Theory  | 30     |
 | Q2: Writing C++ Code  | 40     |
 | Q3: UML Class diagram  | 30     |
@@ -65,57 +65,59 @@ Over the the past two years I received two common questions. I believe that it i
 
 - **Question 1**: Can I pass the entire course with $0$ on the paper exam because I have already achieved $80\%$ on the $50\%$ of the course grade (coursework as continous assessment)
 
-    **Answer**: No, you won't. According to the UoG's guideline, you need to pass any component constituting of more than $30\%$ of the course grade by the minimum **E3** (namely 30 points out of 100 points). In general, I am happy to pass somebody with $28{} \textendash{} 29$ points with true effort. But if that somebody got $28$ points due to my gentle marking, I still need to fail them. For example, I give $1$ point for every attempt while the answers are all wrong and your grade still cannot cross the threshold $30$ points, you deserve a fail even at the boundary $29$ points.
+    **Answer**: [**No, you won't**]{style="color:red"}. According to the UoG's guideline, you need to pass any component constituting of more than $30\%$ of the course grade by the minimum **E3** (namely 30 points out of 100 points). In general, I am happy to pass somebody with $28{} \textendash{} 29$ points with true effort. But if that "somebody" got $28$ points due to my gentle marking, I still need to fail them. For example, if I give $1$ point for every attempt while the answers are all wrong and your grade still cannot cross the threshold $30$ points, you deserve a fail even at the boundary $29$ points.
 
 - **Question 2**:  Can I pass the exam by learning everything by heart without understanding the logics or should I understand the logic?
 
-    **Answer**: This question sounds irony but it is completely legitimate. Here is my thought. First, exams are deisnged to test your knowledge, not to test your memory. So, without understanding the logics, I think you will likely fail. Second, I don't believe that that anybody can learn $200$ lines of code by heart and can apply what they memorize to another applications without understanding a single thing. In doing that, you have already understood something. If you believe that you already learned $200$ lines of code by heart but you could not apply what you did to a similar application, then you actually did not learn anything by heart.
+    **Answer**: This question sounds ironic but it is completely legitimate. Here is my thought. First, exams are deisnged to test your knowledge, not to test your memory. So, without understanding the logics, I think you will mostly likely fail. Second, I don't believe that anybody can learn $100$ lines of code by heart and can apply what they memorize to other applications without understanding a single thing. In doing that, you have accummulated some understanding. If you believe that you already learned $100$ lines of code by heart but you could not apply what you did to a similar application, then you actually did not learn anything by heart.
 
 ## What to review
 
-When I was a student, my professors always answer the question "what to review?" by a single sentence: "Everything we have learned so far". That's all, no further elobration. Personally, I think this should be a standard question for such a question too. What's the point if you can pass an exam by knowing a very specific area. You are educated to work in real-world environment, not to pass the exams.
+When I was a student, my professors always answer the question "what to review?" by a single sentence: "Everything we have learned so far". That's all, no further elobration. Personally, I think this should be a standard answer for such a question too. What's the point if you can pass an exam by knowing a very specific area! You are trained and taught to work in real-world environments, not to pass the exams.
 
 Saying that, this is my advice. You should at least understand the following important concepts and know how to implement them in C++ code.
 
-- **Basics of C++**: To understand the code and to understand exam's questions, of course you need to know and understand the basics of C++.
-    - [**Iteration statements**]{style="color:blue"}: `for` loop`, `while` loop, `do-while` loop
-    - [**Condition statements**]{style="color:red"}: `if` statement, `if-else` statement, `if-else-if` statement
-    - [**Functions**]{style="color:red"}: function definition, parameters versus arguments, return value of a function
+1. **Basics of C++**: To understand the code and to understand exam's questions, of course you need to know and to understand the basics of C++.
+    - [**Iteration statements**]{style="color:brown"}: `for` loop`, `while` loop, `do-while` loop
+    - [**Condition statements**]{style="color:brown"}: `if` statement, `if-else` statement, `if-else-if` statement
+    - [**Functions**]{style="color:brown"}: function definition, parameters versus arguments, return value of a function
 
-- **Intermediate of C++**: The question of C++ theory basically may ask you anything we have learned so far from the lectures. However, these are the concepts you may want to pay good attention on
-    - [**reference**]{style="color:blue"}, [*pass by reference*]{style="color:blue"} versus [*pass by value*]{style="color:blue"} in writing functions
-    - [**pointer**]{style="color:blue"}, [*pass by pointer*]{style="color:blue"} (frequenly called [*pass by address*]{style="color:blue"})
-    - [**template**]{style="color:blue"}: function template, class template
+2. **Intermediate of C++**: The question of C++ theory may ask you anything we have learned so far from the lectures. However, these are the concepts you may want to pay good attention to
+    - [**reference**]{style="color:brown"}, [*pass by reference*]{style="color:blue"} versus [*pass by value*]{style="color:blue"} in writing functions
+    - [**pointer**]{style="color:brown"}, [*pass by pointer*]{style="color:blue"} (frequenly called [*pass by address*]{style="color:blue"})
+    - [**template**]{style="color:brown"}: function template, class template
 
-- **Object-oriented programming**: Of course, you should be able to implement very basics of object-oriented programming paradigm.
+3. **Object-oriented programming**: Of course, you should be able to implement very basics of object-oriented programming paradigm.
     - [**class**]{style="color:brown"}: define a class, write a constructor, write a destructuor, list initializer for constructor, etc.
     - [**access speficiers**]{style="color:brown"}: `private`, `public` and `protected`. `protected` is rarely used but you may at least need to be aware of this.
     - [**overriding operators**]{style="color:brown"}: override operator `<<` (output the object), arithmetic operators `+` (addition), `-` (subtraction), `*` (multiplication), etc.
     - [**inheritance**]{style="color:brown"}: basic concept of inheritance, how to define a child class
-    - [**polymorphism**]{style="color:brown"}: basic concept of polymorphism, how to implement polynomorphism for children classes using `virtual function`.
+    - [**polymorphism**]{style="color:brown"}: basic concept of polymorphism, how to implement polynomorphism for children classes using `virtual` functions
     - [**abstract class**]{style="color:brown"}: basic concept of abstract class, how to make a class abstract.
 
-That sounds a lot!?!? **Not really**. If you practice **Question 2:: Writing C++ Code**, you have reviewed most of the important points here.
+That sounds a lot? -- **Not really**. If you practice **Question 2: Writing C++ Code**, you have reviewed most of the important points here.
 
 # Mock exam
 
-The **mock exam** here follows similar structure of the **real exam** with of course different questions in the part asking C++ theories and a different application in the question asking writing C++ code, and in drawing UML class diagram.
+The **mock exam** here follows similar structure of the **actual exam** with of course different questions in the part asking about C++ theories and a different application in the question asking writing C++ code, and in drawing UML class diagram.
 
 :::{.callout-warning}
 # Appearance of the real exam vs the mock exam
 
-The real paper exam is prepared by LaTeX. So you should see that the questions look like in the past paper exam, namely (a), (b), $\ldots$, (g). However, this mock exam is prepared by using Quarto. [Therefore, the appearance of this mock exam may not look exactly the same as the real one although they are essentially the same. The content is tremendously helpful for the real paper exam though.]{style="color:blue"}
+The actual paper exam is prepared by LaTeX. So you should see that the questions look like in the past paper exam, namely (a), (b), $\ldots$, (h). However, this mock exam is prepared by using Quarto. [Therefore, the appearance of this mock exam does not look exactly the same as the real one although their structures are essentially the same. The content is tremendously helpful for the actual paper exam though.]{style="color:blue"}
 :::
 
 :::{.callout-note}
 # Learn the logics behind the mock exam
-- [Note that the **real exam** is **definitely much shorter than** the **mock exam** here.]{style="color:red"} The mock exam is longer because I want to provide an opportunity for you to "really learn", not to "remember by heart".
-- I struggle preparing this mock exam because I don't want it to be so similar to the real paper exam. But I don't want it to be completely different from the real exam. What's the point of a mock exam if it is completely different? 
-- [**So you should learn the programming logics behind this mock exam, don't try to learn it by heart.**]{style="color:red"}
+- [Note that the **actual exam** is **definitely much shorter than** the **mock exam** here.]{style="color:red"} The mock exam is longer because I want to provide an opportunity for you to "really learn", not to "remember by heart".
+
+- I struggle preparing this mock exam because I don't want it to be so similar to the actual paper exam. But I don't want it to be completely different from the actual exam. What's the point of a mock exam if it is completely different?
+
+- [So you should learn the programming logics behind this mock exam, don't try to learn it by heart.]{style="color:red"}
 :::
 
-## Question 1: C++ Theory
 
+## Question 1: C++ Theory
 
 ### Question (a)
 
@@ -162,22 +164,30 @@ int main() {
 3. Write the implementation for `swap_pointers()`. 
 4. Write the three lines of code inside `main()` required to call these functions correctly using the variables provided. 
 
-You only need to missing code -- don't rewrite what have been provided. You may need to write the line number shown on the code for easy navigation.
+
+:::{.callout-note}
+
+- [**Provide only the missing code**.]{style="color:purple"} To save time, do not rewrite the provided snippets. You may want to include relevant line numbers to ensure easy navigation.
+
+- If a question explicitly requests a brief explanation, it will be factored into your grade. In fact, several questions (not all) in the actual exam asks you to provide short pieces of explanation. Any explanations provided in the answer key are for review purposes only.
+:::
 
 ### Answer (a)
 
-You only need to write the code that the question asks to write. [Don't waste time rewriting code that the question does not ask to write.]{style="color:red"}. If you want to be sure, just write the line number
+1. Implementation for `increment_by_pointer()`, at line $5$:
 
-1. Implementation for `increment_by_pointer()`, at line $5$
+    ```{.cpp}
+    *ptr += 10;
+    ```
 
-    `*ptr += 10;`
-
-    Explanation: We must dereference the pointer.
+    _Explanation_: We must dereference the pointer.
 2. Implementation for `double_by_reference()`, at line $10$: 
 
-    `ref *= 2;`
+    ```{.cpp}
+    ref *= 2;
+    ```
 
-    Explanation: We must treat the reference like standard variable
+    _Explanation_: We must treat the reference like standard variable
 
 3. Implementation for `swap_pointers()`, inside the function body, from line 16:
 
@@ -229,12 +239,12 @@ int main() {
     const Student std_02 {"Hulk"};
 
     // Line 1: Pointer to a constant Student
-    const Student* ptr = &std_01;
-    ptr->set_name("New Name");
+    const Student* ptr { &std_01 };
+    ptr->set_name("Thoriana");
 
     // Line 2: Constant pointer to a Student
-    Student* const cptr = &std_02;
-    cptr->set_name("New Name");
+    Student* const cptr { &std_02 };
+    cptr->set_name("Spider Girl");
 
     // Line 3: Method call
     std::cout << std_02.get_name() << " accessed " << std::endl;
@@ -246,34 +256,37 @@ int main() {
 **Question**
 
 1. **Analyze Line 1 and Line 2**: Both lines will cause a compilation error. Explain the difference between `const Student*` and `Student* const` and why each specific line fails.
-2. **Analyze Method A** (`get_name`): Even though this method is marked `const`, it modifies `access_count`. Explain why this code **will** compile and what the `mutable` keyword achieves in this context. What happens if we remove `mutable`?
-3. **Analyze Line 3**: If the `const` qualifier were removed from the declaration of `get_name()`. Line 3 would fail to compile. Explain why a `const` object like `std_02` can only call `const` member functions.
+2. **Analyze Method A** (`get_name`): Even though this method is marked `const`, it modifies `access_count`. 
+    - Explain why this code **will** compile and what the `mutable` keyword achieves in this context. 
+    - What happens if we remove `mutable`?
+3. **Analyze Line 3**: If the `const` qualifier were removed from the declaration of `get_name()`, line 3 would fail to compile. 
+    - Explain why a `const` object like `std_02` can only call `const` member functions.
 
 
 ### Answer (b)
 
-1. Task 1 (poitners): In C++, we should read pointer declarations from **right to left**. This tells us exactly what the `const` is "locking".
+1. **Task 1** (pointers): Let us make a **quick review**. [In C++, we should read pointer declarations from **right to left**.]{style="color:red"} This tells us exactly what the `const` is "locking".
 
     - Consider `const Student* ptr`:
-        - Read right-to-left: `ptr` is a pointer to a Student that is const.
-        - Meaning: We can move the pointer to a different student, but we cannot change the data of the student it's currently pointing to. The "Data" is frozen.
-
-    [Coming back to `const Student* ptr`]{style="color:brown"}: This is **a pointer to a constant**. The pointer can point to another student (also a const), but it cannot change the data it poitns to. `set_name` is a non-const function, so it's forbidden.
+        - Read right-to-left: `ptr` is a pointer to a Student _that is const_.
+        - Meaning: We can move the pointer to a different student, but we cannot change the data of the student it's currently pointing to. The "Data" is frozen.  
+    
+        [Coming back to `const Student* ptr`]{style="color:brown"}: This is **a pointer to a constant**. The pointer can point to another student (also a const), but it cannot change the data it points to. On the other hand, `set_name` is a non-const function, so it's forbidden.
 
     - Consider `Student* const cptr`
 
         - Read right-to-left: `cptr` is a *const pointer* to a Student.
-        - Meaning: The pointer itself is stuck. We can change the data of the student it points to, but we can never poit it to someone else (another student). The "Address" is frozen. 
+        - Meaning: The pointer itself is stuck. We can change the data of the student it points to, but we can never poit it to someone else (another student). The "Address" is frozen.  
 
-    [Coming back to `Student* const cptr`]{style="color:brown"}: This is a **constant pointer**. We cannot change where `cptr` points to (after initialization), but the Student object `cptr` points to can (ordinarily) change its data. However, since `std_02` is declared `const`, a non-const pointer cannot point to it.
+        [Coming back to `Student* const cptr`]{style="color:brown"}: This is a **constant pointer**. We cannot change where `cptr` points to (after initialization), but the Student object `cptr` points to can (ordinarily) change its data. However, since `std_02` is declared `const`, a non-const pointer cannot point to it.
 
-2. Task 2 (`mutable`): Coming back to `*Student* const cptr`Since we have not studied `mutable`, this mock question is for your knowlege -- no real question on this keyword.
+2. **Task 2** (`mutable`): Coming back to `Student* const cptr`, since we have not studied `mutable`, this mock question is for your knowlege -- no question on this keyword is given in the actual exam.
 
     - `mutable` allows a member variale to be modified even within a `const` member function. This is used for "logical const-ness" (e.g. caching, debugging, or access counters) where the visible state of the object does not change.
 
-3. Task 3 (**const objects**):
+3. **Task 3** (const objects):
 
-    - A `const` object represents a contract that the object's state will not change. Therefore, the compiler only permits calls to member functions that have explicitly promised not to modify the object via the `const` suffix.
+    - A `const` object represents a contract that the object's state will not change. Therefore, the compiler only _permits calls to member functions that have explicitly promised not to modify the object via the `const` suffix._
 
 ### Question (c)
 
@@ -302,7 +315,8 @@ int main() {
     std::cout << "Max int: " << find_max(a, b) << '\n';
 
     // Test Case 2: Strings
-    std::string str_01 { "Apple" }, str_02 { "Zebra" };
+    std::string str_01 { "Apple" };
+    std::string str_02 { "Zebra" };
     std::cout << "Max string: " << find_max(str_01, str_02) << '\n';
 
     // Test Case 3: Custom Objects
@@ -317,8 +331,8 @@ int main() {
 **Question**
 
 1. Write the full definition of the function template `find_max`. It should take two parameters of the same template type by reference to const and return the result by value.
-2. In **Test Case 3**, the code compiles because the `Box` structure has overloaded `operator>`. If this operator was **not** overloaded, what specific error would the compiler generate when trying to instatiate the template?
-3. If the function was called as `find_max(10, 3.14)`, the compiler would fail to deduce the template argument. Eplain why this happens and provide two ways a developer could fix the call in `main()` witout changing the template definition.
+2. In **Test Case 3**, the code compiles because the `Box` structure has overloaded `operator>`. If this operator was **not** overloaded, what specific error would the compiler generate when trying to instantiate the template?
+3. If the function was called as `find_max(10, 3.14)`, the compiler would fail to deduce the template argument. Explain why this happens and provide two ways a developer could fix the call in `main()` witout changing the template definition.
 
 ### Answer (c)
 
@@ -331,14 +345,14 @@ int main() {
     }
     ```
 
-2. Mising operator:
+2. **Missing operator**:
 
     - The compiler would throw an error stating that `operator>` is not defined for the type `Box`.
-    - Key concept: The student should mention that template requirements (concepts) are checked **at the time of instatiation**, not definition.
+    - Key concept: The student should mention that template requirements (concepts) are checked **at the time of instantiation**, not definition.
 
-3. Ambiguous Deduction:
+3. **Ambiguous deduction**:
 
-    - Why: `10` is an `int` and `3.14` is a `double`. The compiler cannot decide if `T` should be `int` or `double` because the template expects both parameters cannot be the exact same type `T`.
+    - **Why**: `10` is an `int` and `3.14` is a `double`. The compiler cannot decide if `T` should be `int` or `double` because the template instantiation expects both parameters cannot be the exact same type `T`, which contradicts the way template function `find_max` is implemented.
 
     - Fix Option 1 (explicit instantiation):
 
@@ -382,8 +396,8 @@ public:
 };
 
 int main() {
-    Payment* payment_ptr = new CreditCard();
-    CreditCard* credit_ptr = new CreditCard();
+    Payment* payment_ptr = new CreditCard {};
+    CreditCard* credit_ptr = new CreditCard {};
 
     std::cout << "1: "; payment_ptr->identify();
     std::cout << "2: "; payment_ptr->process();
@@ -400,13 +414,15 @@ int main() {
 **Question**
 
 1. **Predict the output**: Write down the exact console output for the liens marked `1`, `2`, and `3`.
-2. **Explain the difference**: Why does `payment_ptr->identify()` produce a different result style compared to `payment_ptr->process()`? Explain the role of virtual table in your answer.
-3. The `override` keyword: In the `CreditCard` class, the `process` function uses the `override` keyword. Explain one specific benefit of using this keyword for a developer.
-4. The Destructor: In the `Payment` class, the destructor is marked `virtual`. What would happen if we removed the `virtual keyword` and executed `delete payment_ptr`?
+2. **Explain the difference**: 
+    - Why does `payment_ptr->identify()` produce a different result style compared to `payment_ptr->process()`? 
+    - Explain the role of virtual table in your answer.
+3. **The `override` keyword**: In the `CreditCard` class, the `process` function uses the `override` keyword. Explain one specific benefit of using this keyword for a developer.
+4. **The Destructor**: In the `Payment` class, the destructor is marked `virtual`. What would happen if we removed the `virtual` keyword and executed `delete payment_ptr;`?
 
 ### Answer (d)
 
-1. The output on the console
+1. The output on the console reads
 
     ```{.cpp}
     Standard Payment
@@ -424,20 +440,92 @@ int main() {
     - `indentify()` is a non-virtual function. The compiler uses **static binding**, meaning it looks at the type of the point (`Payment*`) at **compile-time**.
     - `process()` is a virtual function. The compiler uses **dynamic binding**. At **runtime**, the program follows the object's internal **vpointer** (**v** stands for virtual) to the **vtable**, which points to the `CreditCard` implementation.
 
-3. Override benefit
+3. `override` benefit
     
-    - It provides a compiler check. If the signature in the derived class does not exactly match a virtual function in the base class (e.g., a typo in the name or a missing `const`), the compiler will trigger an error instead of silently creating a new function.
+    - _It provides a compiler check._ If the signature in the derived class does not exactly match a virtual function in the base class (e.g., a typo in the name or a missing `const`), the compiler will trigger an error instead of silently creating a new function. Essentially, the compiler tells you "hey, you said you override a virtual function, but I do not see it in the parent class."
 
 4. Virtual destructor: We have not learned this in the lectures, so don't worry! I explain here for your knowledge.
 
     - If the destructor is not virtual, deleting a `Derived` object through a `Base*` results in **undefined behavior**. Usually, only the `Base` part of the object is destroyed, leading to a memory leak if the `Derived` class allocated its own resources.
 
-## Question 2: Writing C++ 
+### Question (e)
 
+You are given the following code snippet:
+
+```{.cpp}
+#include <iostream>
+#include <vector>
+#include <string>
+
+struct Student {
+    std::string name;
+    double grade;
+};
+
+int main() {
+    std::vector<Student> class_list {
+        {"Alice", 75.0},
+        {"Bob", 42.5},
+        {"Charlie", 88.0}
+    };
+
+    // Task 1: Fix this loop
+    // Logic: If a grade is below 50, "curve" it by adding 10 points.
+    for (Student s : class_list) {
+        if (s.grade < 50.0) {
+            s.grade += 10.0;
+        }
+    }
+
+    // Task 2: Fix this loop
+    // Logic: Print all student names and grades.
+    std::cout << "Class List:" << '\n';
+    for (Student s : class_list) {
+        std::cout << s.name << ": " << s.grade << '\n';
+    }
+
+    return 0;
+}
+```
+
+**Question**
+
+1. **Identify the Logic Error in Task 1**: After the first loop finishes, Bob's grade in the `class_list` vector is still `42.5`. Explain why the modification failed and rewrite the loop header (`for (...)`) to fix it.
+2. **Optimize Task 2**: The current loop in Task 2 works, but it is inefficient for a vector of objects. Explain why it is inefficient and rewrite the loop header to follow C++ best practices for read-only access.
+3. **Advanced Scenario**: If you wanted to iterate through `class_list` but ensure that you cannot accidentally modify any student data within the loop body, what specific keywords would you use in the loop declaration?
+
+### Answer (e)
+
+1. **Pass by Value versus Pass by Reference**
+    - **Reasoning**: The loop variable `Student s` is a **copy** of the element in the vector. Modifications are made to the local copy, which is destroyed at the end of each iteration, leaving the original vector unchanged.
+    - **Fix**:
+
+        ```{.cpp}
+        for (Student& s: class_list)    // use a reference
+        ```
+
+2. **Efficiency**
+    - `Student` contains a `std::string`. Passing by value triggers a copy constructor for every iteration, which involves dynamic memory allocation. This is computationally expensive.
+    - **Fix**:
+
+        ```{.cpp}
+        // use const reference, make sure we don't change the values
+        for (const Student& s: class_list)  
+        ```
+
+3. `const` **correctness**: Using keyword `const` and reference ampersand (`&`) is the way to go. By using `const Student&` _we ensure no copies are made_ **and** _the compiler will prevent any code inside the loop from calling non-const methods or modifying member variables_.
+
+## Question 2: Writing C++ 
 
 ### Problem description 
 
-In mathematics, a complex number is an element of a number system that extends the real numbers with specific element denoted '$\mathrm{i}$', called the imaginary unit and satisfying the equation $\mathrm{i}^2 = -1$ (or equivalently $\mathrm{i} = \sqrt{-1}$). Every complex number $z$ can be expressed in the form $z = a + b \mathrm{i}$, where $a \in \mathbb{R}$ and $b \in \mathbb{R}$ are real numbers. Two complex numbers $z_1 = a_1 + b_1 \mathrm{i}$ and $z_2 = a_2 + b_2 \mathrm{i}$ are added according to the rule 
+In mathematics, a complex number is an element of a number system that extends the real numbers with specific element denoted "$\mathrm{i}$", called the imaginary unit and satisfying the equation $\mathrm{i}^2 = -1$ (or equivalently $\mathrm{i} = \sqrt{-1}$). Every complex number $z$ can be expressed in the form 
+$$
+z = a + b \mathrm{i},
+$$
+where $a, b \in \mathbb{R}$ are real numbers. 
+
+Two complex numbers $z_1 = a_1 + b_1 \mathrm{i}$ and $z_2 = a_2 + b_2 \mathrm{i}$ are added according to the rule 
 
 $$
 z_1 + z_2 = (a_1 + a_2) + (b_1 + b_2) \mathrm{i}
@@ -453,7 +541,7 @@ $$
 
 1. Write code to define the class **`ComplexNumber`** with two private data members, named **`re`** and **`im`**. 
 
-2. Write a constructor receiving two input arguments **`re`** and **`im`** with default value $0$ to initialize the data members described in (a). Use list initialization (not the assignment statements) to initialize these data members. 
+2. Write a constructor receiving two input arguments **`re`** and **`im`** with default value $0$ to initialize the data members described in (a). Use list initialization (not the assignment statements) to initialize these data members.
 
 3. Write a function overloading the operator **`<<`** of the object **`std::ostream`** so that the statement "`std::cout << comp_num;`" works for the **`ComplexNumber`** object **`comp_num`**. You must decide the print-out format that makes sense to the user. For example, consider the following numbers: $1 + 0\,\mathrm{i} = 1$ and $0 + 2\,\mathrm{i} = 2\,\mathrm{i}$.
 
@@ -466,7 +554,6 @@ $$
    ```
 
 5. Write a member function with name `pow` to compute the power $z^{n}$ of the complex number $z$ with $n$ being a non-negative integer. Recall that
-
    $$
    z^{0} = 1,\quad z^{1} = z, \quad z^{2} = z \cdot z, \quad z^{3} = z\cdot z \cdot z, \quad z^{n} = \underbrace{z \cdot \cdots \cdot z}_{n \text{ terms}}.
    $$
@@ -476,7 +563,6 @@ $$
    ```{.cpp}
    c = a + b;  // a, b, c are all ComplexNumber objects
    ```
-   
 
 7. Write a class **`RealNumber`** derived from the class **`ComplexNumber`** you have defined above. The class **`RealNumber`** must have a constructor receiving one `double` number and make sure that the imaginary part derived from the parent class is equal to zero.
 
@@ -495,7 +581,7 @@ $$
       
       using the `for`-loop.
 
-    *Note that you can write any helper functions that are not defined by answering the above questions to complete the* **main** *function and other functions.* **[9 marks]**
+    *Note that you can write any helper functions that are not defined by answering the above questions to complete the* **main** *function and other functions.*
 
     **Hint**: `static_cast<double>(42)` will convert the integer $42$ into the double $42.0$.
 
@@ -512,7 +598,7 @@ private:
 
 public:
     // Constructor with list initialization and default values
-    ComplexNumber(double r = 0, double i = 0) : re(r), im(i) {}
+    ComplexNumber(double re = 0, double im = 0) : re{re}, im {im} {}
 
     // Overloading the assignment operator
     ComplexNumber& operator=(const ComplexNumber& other) {
@@ -562,7 +648,7 @@ public:
 // Derived class RealNumber
 class RealNumber : public ComplexNumber {
 public:
-    RealNumber(double r) : ComplexNumber(r, 0) {}
+    RealNumber(double value) : ComplexNumber(value, 0) {}
 };
 
 int main() {
@@ -570,23 +656,22 @@ int main() {
     ComplexNumber* z_array = new ComplexNumber[5];
 
     // Initialize using for-loop
-    // Pattern: z_j = j + (j+1)i
+    // Pattern: z_j = j + (j+1) \sqrt{-1}
     for (int j = 0; j < 5; ++j) {
-        double r = static_cast<double>(j + 1);
-        double i = static_cast<double>(j + 2);
-        z_array[j] = ComplexNumber(r, i);
+        z_array[j] = ComplexNumber(static_cast<double>(j + 1), 
+                                   static_cast<double>(j + 2));
     }
 
-    // Compute sum s = Σ z_j
-    ComplexNumber s(0, 0);
+    // Compute sum s = \sum\limits_{j} z_j
+    ComplexNumber sum { 0, 0 };
     for (int j = 0; j < 5; ++j) {
         s = s + z_array[j];
     }
-    std::cout << "Sum s = " << s << std::endl;
+    std::cout << "sum = " << sum << std::endl;
 
-    // Compute Λ = 1 + z + z^2 + z^3 + z^4 + z^5 for z = 1 + 2i
-    ComplexNumber z(1, 2);
-    ComplexNumber lambda(0, 0);
+    // Compute Lambda = 1 + z + z^2 + z^3 + z^4 + z^5 for z = 1 + 2i
+    ComplexNumber z {1, 2};
+    ComplexNumber lambda {0, 0};
     for (int n = 0; n <= 5; ++n) {
         lambda = lambda + z.pow(n);
     }

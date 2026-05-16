@@ -1,0 +1,203 @@
+==============================
+Question 1
+==============================
+
+a,
+=========
+
+// 1. Increments the value of 'n' by 10 using a pointer.
+void increment_by_pointer(int* ptr) {
+    *ptr += 10;
+}
+
+// 2. Doubles the value of 'n' using a reference.
+void double_by_reference(int& ref) {
+    ref *= 2;
+}
+
+// 3. Swaps the address held by two pointers (Pointer to Pointer).
+// Note: This should change where the pointers in main point to.
+void swap_pointers(int** ptr1, int** ptr2) {
+    int* temp = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = temp;
+}
+
+int main() {
+    int a { 5 };
+    int b { 50 };
+    
+    int* pA { &a };
+    int* pB { &b };
+
+    // Task 1: Use increment_by_pointer to make 'a' equal to 15.
+    increment_by_pointer(pA);
+
+    // Task 2: Use double_by_reference to make 'b' equal to 100.
+    double_by_reference(b);
+
+    // Task 3: Use swap_pointers so that pA points to 'b' and pB points to 'a'.
+    swap_pointers(&pA, &pB);
+
+    return 0;
+}
+
+b,
+=========
+
+1. const Student* specifies a pointer to a constant Student class instance, meaning the class itself that the pointer is pointing to is constant. 
+Therefore, when set_name tries to alter the student instance through set_name, the compiler marks it as the set_name() method isn't marked as constant in the class and thus cannot run on const instances.
+Student* const specifies that the pointer itself is constant, and thus can only point to the one Student* instance that it was instantiated to.
+However, the pointer attempt to point to a constant instance of Student while, meaning the its missing the keyword const between student. 
+The compiler won't allow a pointer to a const Student instance if the pointer doesn't also specify that the const Student*
+
+2. mutable means that the member variable can be changed even if the instance is const. If mutable is removed, then then get_name() would not compile as it changes a non mutable member variable while being marked const.
+
+3. a const member function is a promise to the compiler that this function will not change the class instance, and thus can run on const instances. 
+If that mark is not there, even if the function doesn't alter the object, the compiler doesn't know that and won't allow it to run on non-const objects.
+
+c,
+=========
+
+template<typename T>
+
+T find_max(const T& b1, const T& b2) {
+    return (b1 > b2) ? b1 : b2;
+}
+
+2. Operator> not defined for type Box., this error would arise at the Test Case 3, not the class definition.
+
+3. This happens because the compiler only knows one version of the find_max() function, and its where both parameters are of the same type.
+
+One option would be to specify that the compiler should instantiate the find_max<double>(), this forces both numbers to double.
+The other option would be change the 10 parameter to a double, using static_cast<double>(), meaning the common type would be double.
+
+d,
+=========
+
+1. 
+    1: Standard Payment
+    2: Processing credit card via secure gateway...
+    3: Credit Card
+
+2. The identify() function is implemented in both classes, but is not virtual. 
+This means that a pointer can only see the implementation of identify() based on the type of pointer. 
+So, payment_ptr is pointing to a CreditCard object, but the identify() is resolved into the Payment implementation, due to the pointer pointeing at a Payment object. (CALLED STATIC BINDING -> compile time)
+The second call calls a virtual function, meaning that even though the pointer is poitning to a Payment object, the compiler resolves the process() to the most derived override, 
+meaning the CreditCard implementation is called instead. (CALLED DYNAMIC BINDING -> uses the objects internal vpointer, which points to the CreditCard implementation)
+
+3. the override keyword ensures that the current function is actually overriding a previously implemented function. 
+If the developer made a mistake in the function signature and wasn't actually overriding but creating a different function, the compiler would flag it.
+
+4. As the payment_ptr is pointing to a Payment object, only the Payment object destructor would be called, meaning any CreditCard member variables with dynamically allocated memmory would not be destroyed.
+
+
+e,
+=========
+
+1. The for loop uses pass by value, meaning the Student objects are being copied, menaing the changes are made to the internal copies not the actual original vector's object.
+The header should be changed to : for(Student& s : class_list)
+
+2. since we're not altering, passing by value is not efficient. Meaning pass by constant reference is more efficient, avoiding the copying:
+for(const Student& s: class_list){}
+
+3. Again use the constant refference in the declaration, which tells the compiler that the loop cannot alter that variable:
+for(const Student& s: class_list){}
+
+
+
+==============================
+Question 2
+==============================
+
+class ComplexNumber {
+
+    private:
+        double re;
+        double im;
+
+    public:
+
+        ComplexNumber(double re = 0, double im = 0) : re(re), im(im) {}
+    
+        friend std::ostream& operator<<(std::ostream& out, const ComplexNumber& n) {
+            if(n.im == 0) {
+                out << n.re;
+            }
+            else if(n.re == 0) {
+                out << n.im;
+            }
+            else {
+                out << n.re << " " << n.im << "i";
+            }
+
+            return out;
+        }
+
+        friend ComplexNumber operator+(const ComplexNumber& n1, const ComplexNumber& n2 ) {
+            return ComplexNumber( n1.re+n2.re , n1.im + n2.im);
+        }
+
+        friend ComplexNumber operator*(const ComplexNumber& n1, const ComplexNumber& n2 ) {
+            double temp_re = (n1.re * n2.re) - (n1.im * n2.im);
+            doble temp_im = (n1.re * n2.im) + (n2.re * n1.im);
+            return ComplexNumber(temp_re, temp_im);
+        }
+
+        ComplexNumber pow(int n) {
+            ComplexNumber temp(1,0);
+
+            if(n == 1) [
+                temp = *this;
+            ]
+
+            for(int i{1}; i<n; i++) {
+                temp = temp * *this;
+            }
+
+            return temp;
+        }
+
+        ComplexNumber& operator=(const ComplexNumber& n) {
+            this.re = n.re;
+            this.im = n.im;
+            return *this;
+        }
+
+};
+
+class RealNumber : public ComplexNumber {
+
+    public:
+        RealNumber(double re) : ComplexNumber(re, 0) {}
+
+};
+
+int main() {
+
+    ComplexNumber* ptr { new ComplexNumber[5]};
+
+    for(int i{0} ; i < 5; i++) {
+        ptr[i] = ComplexNumber(i+1, i+2);
+    }
+
+    ComplexNumber sum{};
+    for(size_t i{0}; i<5; i++) {
+        sum = sum + ptr[i];
+    }
+
+    std::cout << "The sum of the numbers is: " << sum << std::endl;
+
+    ComplexNumber z(1,2);
+
+    ComplexNumber lambda;
+    for(int i{0}; i<6; i++) {
+        lambda = lambda + z.pow(i);
+    }
+
+    std::cout << "The lambda of the numbers is: " << lambda << std::endl;
+
+    delete[] ptr;
+
+    return 0;
+}

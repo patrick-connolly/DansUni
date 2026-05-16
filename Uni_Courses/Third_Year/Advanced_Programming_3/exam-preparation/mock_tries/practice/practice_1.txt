@@ -1,0 +1,222 @@
+#include <iostream>
+#include <string>
+#include <memory>
+#include <vector>
+
+class Message {
+private:
+    std::string text;
+    mutable int read_count { 0 };
+
+public:
+    Message(std::string text = "")
+        : text { text }
+    {
+    }
+
+    std::string get_text() const {
+        ++read_count;
+        return text;
+    }
+
+    void set_text(const std::string& new_text) {
+        text = new_text;
+    }
+
+    int get_read_count() const {
+        return read_count;
+    }
+
+    Message& operator=(const Message& other) {
+        text = other.text;
+        read_count = other.read_count;
+        return *this;
+    }
+
+    friend std::ostream& operator<<(std::ostream& out, const Message& msg);
+};
+
+std::ostream& operator<<(std::ostream& out, const Message& msg) {
+    out << msg.text;
+    return out;
+}
+
+class Notification {
+public:
+    void identify() const {
+        std::cout << "Generic notification\n";
+    }
+
+    virtual void send() const {
+        std::cout << "Sending generic notification: ";
+    }
+
+    virtual ~Notification() = default;
+};
+
+class EmailNotification : public Notification {
+private:
+    Message message;
+
+public:
+    EmailNotification(const Message& message)
+        : message { message }
+    {
+    }
+
+    void identify() const {
+        std::cout << "Email notification\n";
+    }
+
+    void send() const override {
+        std::cout << "Sending email: " << message << '\n';
+    }
+
+    const Message& get_message() const {
+        return message;
+    }
+};
+
+template <typename T>
+T choose_larger(const T& a, const T& b) {
+    return (a > b) ? a : b;
+}
+
+std::string make_polite(const std::string& command) {
+    return command + " please.";
+}
+
+std::string make_polite(std::unique_ptr<std::string> command) {
+    return *command + " if you don't mind.";
+}
+
+int main() {
+    Message m1 { "Submit report" };
+    const Message m2 { "Check inbox" };
+
+    Message* p1 { &m1 };
+    const Message* p2 { &m2 };
+
+    p1->set_text("Submit final report");
+    std::cout << p2->get_text() << '\n';
+
+    Notification* n1 { new EmailNotification { m1 } };
+    EmailNotification* n2 { new EmailNotification { m2 } };
+
+    std::cout << "A: ";
+    n1->identify();
+
+    std::cout << "B: ";
+    n1->send();
+
+    std::cout << "C: ";
+    n2->identify();
+
+    std::unique_ptr<std::string> task { std::make_unique<std::string>("Send email") };
+
+    std::cout << make_polite(*task) << '\n';
+    std::cout << make_polite(task) << '\n';
+
+    delete n1;
+    delete n2;
+
+    return 0;
+}
+
+a,
+    The first one is a pointer to the m1 object.
+    The second one is a pointer to the m2 object, but the message object is marked constant, and hence cannot be changed by the pointer.
+    the line compiles, because m1 is being changed using the set_text through the p1 pointer, which is not marked const.
+
+    3.
+    this would fail to compile because the p2 pointer specifies the message as constant and hence cannot run any non-const members of Message
+
+    4.
+    this compiler because get_text() is marked constant by the const suffix, and hence can be run on const Message objects.
+
+    5.
+    this saves time by not having to copy the given rvalue string internally, as it is not changed, and thus can be used directly without copying using a constant reference.
+    moreover, using a const reference means the function can be run using temporary rvalues which do not persist after end of expression.
+
+b,
+
+    1. 
+    this code compiles when the const member function changes a member variable because the read_count is specified as mutable
+
+    2.
+    the mutable keyword means it can be altered even when the object is constant or the function is marked constant. It is used precisely for debugging, or tracking purposes.
+
+    3.
+    this function definition would no longer compile, as the function is marked const but alters a non-mutable member variable in the body
+
+    4.
+    no idea wtf is this bro
+
+c,
+
+    1. 
+    because the operator= normally acts on and alters the lvalue variable. 
+
+    2.
+    Message& means that the lvalue variable used in the x = a + b returns the actual x value and not a copy, meaning this operator can be cascaded efficiently while retaining its functionality.
+
+    3.
+    return *this means that the operator= returns the actual object current being operated on by dereferencing the this pointer pointing to the variable which called the function.
+
+    4.
+    if a reference to a local variable was used, the local varible would be destroyed after the funciton was exited, meaning the reference would not be valid and would be a dangling reference.
+
+d,
+
+    1.
+    to properly return the std::cout operator which first called the overload and the funciton doesn't attemp to copy the std::cout and return a copy.
+
+    2.
+    again it should act on the first called std::cout object directly.
+
+    3.
+    the message is not being altered in this function so passing by const reference saves time by not copying as well as ensuring the msg object is not altered using the const operator.
+
+    4.
+    so it can directly access the private text member variable of Message objects
+
+e,
+
+    1.
+    A: Generic notification
+    B: Sending email: Submit Report
+    C: Email Notification
+    
+    2.
+    Because the call uses static binding, meaning that the Notification pointer only sees the Notification part of the EmailNotification object, and hence calls the Notificaiton implementation
+
+    3.
+    Because the call uses dynamic binding, meaning the call to send() is resolved using the internal vpointer which points to the derived implementation in the EmailNotification, even if the pointer is of type Notification
+
+    4.
+    virtual allows polymorphic properties of Base class pointers calling derived class member funcitons using the polymorphism of Derived classes being Base Classes too
+
+    5.
+    override acts as a safeguard by ensuring that the current implementation matches a previously implemented function's signature and is correcty overriding that funciton, instead of creating a different one.
+
+f,
+    1. So the destructor is also called on derived parts of the base object2. if EmailNotification used dynamic memory allocation, that memory would not be freed
+
+
+g,
+
+    1. the string parameter one
+    2. because the make_polite uses pass by value on a unique_ptr which is not allowed
+    3. unique_ptr does not allow the copy constructor to be called, and marks it as deleted.
+    4. we haven't done std::moreover
+
+h,
+
+    1. this creates a template variable T which can be used in template definitions
+    2. the choose_larger funciton doesn't alter the parameters, so using const reference saves not having to copy the values internally
+    3. pass by value is used because subsequent changes can be made to the returned object which would actually change one of the originally passed object. Using return by value simply creates a copy of the larger object, so any subsequent changes do not affect the parameters.
+    4. it fails because there only exists one template which has both of the parameters of the same type, but that call has an integer and double.
+    5. It can be fixed either by specifically calling choose_larger<double> or using static_cast<double> on the integer.
+
+BONUS 
+    either task has to be dereferenced to the string object to call the string overload or the unique_ptr implementation needs to be changed to pass by reference.
