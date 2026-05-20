@@ -1,0 +1,180 @@
+==================
+Question 1
+===================
+
+a,
+
+// 1. Increments the value of 'n' by 10 using a pointer.
+void increment_by_pointer(int* ptr) {
+    *ptr += 10;
+}
+
+// 2. Doubles the value of 'n' using a reference.
+void double_by_reference(int& ref) {
+    ref *= 2;
+}
+
+// 3. Swaps the address held by two pointers (Pointer to Pointer).
+// Note: This should change where the pointers in main point to.
+void swap_pointers(int** ptr1, int** ptr2) {
+    int* temp = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = temp;
+}
+
+int main() {
+    int a { 5 };
+    int b { 50 };
+    
+    int* pA { &a };
+    int* pB { &b };
+
+    increment_by_pointer(pA); //or &a
+    double_by_reference(b);
+    swap_pointers(&pA, &pB);
+
+    return 0;
+}
+
+b,
+    1;
+    const Student* specifies that the pointer is pointing to a constant Student object.
+    Student* const means that the pointer itself is constant, and cannot point to a different object.
+    ptr treats the Student object as const, and cannot call non-const member function, like set_name
+    the cptr definition fails, because the std_02 object is constant, and thus cannot be pointed to by a pointer treating the object as not constant.
+
+    2.
+    mutable marks a variable which can be altered even by functions marked const. 
+    get_name() would fail to compile as it changes a non-mutable member variable while being marked const.
+
+    3.
+    const suffix is a promise to the compile that this function will not change the object. 
+    If that declaration is missing, the compiler won't a non-const member function to run on a const member.
+
+c,
+
+    1.
+    template<typename T>
+    T find_max(const T& t1, const T& t2) {
+        return (t1 > t2) ? t1 : t2;
+    }
+
+    2.
+    The compiler would not know operator> does for a Box type so:
+    operator> not defined for type Box
+    THIS ERROR WOULD OCCUR AT INSTANTIATION OF THE TEMPLATE, NOT ITS DEFINITION
+
+    3.
+    This fails because the template only allows two identical types as arguments.
+    One method is to explicitly declare find_max<double>, as this upgrades the int to a double automatically
+    Another method is to static_cast<double>(10), to make both arguments double, which instantiates the find_max<double> implicitly.
+
+
+d,
+the usual
+
+e,
+
+    1.
+    the logic failed because the for loop uses pass by value so it increments only the internal copy.
+    for (Student& s : class_list) {}
+
+    2.
+    it is inneficient as the purpose of the loop is only to print and not change the s in any way, so pass by value copies the Student variable for no reason. 
+
+    3.
+    specify the Student& reference as const: for( const Student& s : class_list) {}
+
+
+============
+Question 2
+============
+
+
+class ComplexNumber {
+
+    private:
+        double re;
+        double im;
+
+    public:
+        ComplexNumber(double re = 0, double im = 0) : re(re), im(im) {}
+
+        friend std::ostream& operator<<(std::ostream& out, const ComplexNumber& n) {
+            if(n.re == 0) {
+                out << n.im << "i";
+            }
+            else if(n.im == 0) {
+                out << n.re;
+            }
+            else if(n.im < 0) {
+                out << n.re << " - " << std::abs(n.im) << "i";
+            }
+            else {
+                out << n.re << " + " << std::abs(n.im) << "i";
+            }
+
+            return out;
+        }
+
+        friend ComplexNumber operator+(const ComplexNumber& n1, const ComplexNumber n2) {
+            return ComplexNumber(n1.re+n2.re , n1.im + n2.im);
+        }
+
+        friend ComplexNumber operator*(const ComplexNumber& n1, const ComplexNumber n2) {
+            double new_re = n1.re*n2.re - n1.im*n2.im;
+            double new_im = n1.re*n2.im + n2.re*n1.im;
+            return ComplexNumber(new_re, new_im);
+        }
+
+        ComplexNumber pow(int n) {
+            ComplexNumber result(1,0);
+
+            for(int i{0}; i < n; i++) {
+                result = result * (*this);
+            }
+
+            return result;
+        }
+
+        ComplexNumber& operator=(const ComplexNumber& n) {
+            this->re = n.re;
+            this->im = n.im;
+            return (*this);
+        }
+
+};
+
+class RealNumber : public ComplexNumber {
+    public:
+        RealNumber(double re) : ComplexNumber(re, 0) {}
+};
+
+int main( {
+
+    ComplexNumber* ptr {new ComplexNumber[5]};
+    
+    for(int i{0}; i < 5; i++) {
+        ptr[i] = ComplexNumber(i+1, i+2);
+    }
+
+    ComplexNumber sum;
+    
+    for(int i{0}; i < 5; i++) {
+        sum = sum + ptr[i];
+    }
+
+    std::cout < "The sum is: " << sum << std::endl;
+
+    ComplexNumber z(1,2);
+    ComplexNumber lambda;
+
+    for(int i{0}; i < 6) {
+        lambda = lambda + z.pow(i);
+    }
+
+    std::cout < "The lambda is: " << lambda << std::endl;
+
+    delete[] ptr;
+
+})

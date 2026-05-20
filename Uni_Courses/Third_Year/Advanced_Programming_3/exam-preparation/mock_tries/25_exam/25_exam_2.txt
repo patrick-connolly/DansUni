@@ -1,0 +1,89 @@
+============
+Question 3
+============
+
+class ComplexNumber {
+
+    private:
+        double re{};
+        double im{};
+
+    public:
+        ComplexNumber(double re = 0, double im = 0) : re(re), im(im) {}
+
+        ComplexNumber add(const ComplexNumber& other) const {
+            return ComplexNumber( re+other.re, im+other.im);
+        }
+
+        ComplexNumber multiply_by_scalar(const double scalar) const {
+            return ComplexNumber(scalar*re, scalar*im);
+        }
+
+        ComplexNumber multiply_by(const ComplexNumber& other) const {
+            double new_re = re*other.re - im*other.im;
+            double new_im = re*other.im + im*other.re;
+            return ComplexNumber(new_re, new_im);
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const ComplexNumber& other) {
+            if(other.im == 0 && other.re != 0) {
+                out << other.re;
+            }
+            else if(other.im != 0 && other.re == 0) {
+                out << other.im << "*i";
+            }
+            else if(other.im == 0 && other.re == 0) {
+                out << "0";
+            }
+            else if((other.im < 0 && other.re > 0) || (other.im > 0 && other.re < 0)) {
+                out << other.re << " - " << std::asb(other.im) << "*i";
+            }
+            else {
+                out << other.re << " + " << other.im << "*i";
+            }
+
+            return out;
+        }
+
+        friend ComplexNumber operator+(const ComplexNumber& n1, const ComplexNumber& n2) {
+            return n1.add(n2);
+        }
+
+        friend ComplexNumber operator*(const ComplexNumber& n1, const ComplexNumber& n2) {
+            return n1.multiply_by(n2);
+        }
+
+        ComplexNumber& operator=(const ComplexNumber& other) {
+            re = other.re;
+            im = other.im;
+            return *this;
+        }
+
+};
+
+class RealNumber : public ComplexNumber {
+
+    public:
+        RealNumber(double re) : ComplexNumber(re, 0) {}
+};
+
+
+int main() {
+
+    ComplexNumber* ptr { new ComplexNumber[5]};
+
+    for(int i{0}; i < 5; i++) {
+        ptr[i] = ComplexNumber(i+1,i+2);
+    }
+
+    ComplexNumber sum;
+    for(int i{0}; i < 5; i++) {
+        sum = sum + ptr[i];
+    }
+
+    std::cout << "The sum is: " << sum;
+
+    delete[] ptr;
+
+    return 0;
+}

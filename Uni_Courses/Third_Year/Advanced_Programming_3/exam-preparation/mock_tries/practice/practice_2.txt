@@ -1,0 +1,420 @@
+Question 1:
+
+1,
+10 25 35
+
+2,
+by value only increments the internal copy, so the a variable is unchanged. The rest are incremented
+
+3,
+the function expects a pointer to a variable, so the argument given is the address of c, aka &c. The address-of-operator returns the address of c.
+
+4.
+This line first dereferences the pointer, to yield the object that is being pointer to, and then increments that object by 5
+
+Question 2:
+
+1,
+p points to 42
+q is null
+
+2,
+it takes the pointer by value, meaning it creates an internal copy of the pointer and sets that to nullptr.
+
+3,
+it doesn't make in internal copy, instead it sets the actual q pointer argument to nullptr. 
+
+4,
+The type is a reference to a pointer to an integer
+
+Question 3:
+
+1. 
+No
+
+2. It does not compile because c.get_value() attempts to call a member fucntion not marked const on a const object
+
+3.
+int get_value() const {}
+
+4.
+No it shouldn't, because it changes the internal value variable.
+
+Question 4:
+
+1.
+25
+
+2.
+passed by value
+
+3.
+they aren't changed, as the function copies them internally.
+
+4.
+Bix bigger(const Box& a, const Box& b)
+
+Question 5:
+
+1.
+No
+
+2.
+because the operator+ is not marked with the const suffix, and thus can't be called on const Number objects.
+
+3.
+Number operator+(const Number& other) const
+
+4.
+Because subsequent operations can be made on the returned object, which would change the passed parameters.
+If a temp value was used for the calculation and returned, then the returned reference would be dangling.
+
+Question 6:
+
+1. There is no error
+
+Question 7:
+
+1.
+No
+
+2.
+The operator= overload
+
+3.
+Temperature& operator=(const Temperature& other) {
+        celsius = other.celsius;
+        return *this;
+    }
+
+4. 
+So the chaining exhibited in main can function properly
+
+Question 8:
+
+1.
+Animal shouldn
+
+2.
+The call uses Static Binding, meaning the pointer to the animal object only sees the Animal implementation inside the Dog object
+
+3.
+virtual void speak() const {
+    std::cout << "Animal sound\n";
+}
+
+4.
+I would add the suffix override. This is a safety so the compiler check whether the Dog implementation is correctly matching the signature and overrides the Animal implementation.
+
+Question 9:
+
+1. 
+No
+
+2. 
+It doesn not compile because Shape is an abstract class so it cannot be instantiated on using Shape s {};
+
+3.
+= 0; means its a pure virtual function, meaning the current class is not implementing it and therefore is abstract and cannot be instantiated. Any class inheriting this class must implement the function in order to be instantiatable
+
+4.
+after const it should have override to make sure that it's overriding the virtual function correctly
+
+Question 10:
+
+1.
+No
+
+2.
+The last call is problematic
+
+3.
+The compiler cannot instatiate a larger function with two different types as arguments, the template only specifies when the two are the same type.
+
+4.
+use static_cast<double> on 10 to force it to double
+use larger<double>(10, 2.5), which automatically promotes 10 to a double.
+
+Question 11:
+
+1.
+Derived
+Base
+
+2.
+It uses static binding, so the call is resolved to the function implementation for Derived, the d type.
+
+3.
+This line specifically calls the print() implementation in base using the Namespace specifier Base::print()
+
+4.
+No it is not, the call simply specifies which funciton implementation to run at compile-time, there is no virtual function.
+
+Question 11:
+
+1.
+Engine constructed
+Car constructed
+
+2.
+Because the car object needs an Engine object first before it can be officially initizalized.
+
+3.
+First the main class destructor is called and then any subsequent member variables' desctructors are destroyed, the the class desctructors calls those destructors.
+
+4.
+composition, as the Engine object is directly stored inside Car. Not by pointer of reference, it's store inside Car's memmory space.
+
+Question 13:
+
+1.
+Glasgow
+Glasgow
+
+2.
+Aggregation, as the Address object is stored by reference inside the Student object
+
+3.
+It is not composition, as when the student object is destroyed, only the reference to the address object is derstroyed, but their lifetimes are not tied.
+
+4.
+Because they store the reference to an address, and a reference, like a pointer, can be shared.
+
+Question 14:
+
+1.
+42
+
+2.
+Dependency
+
+3.
+The Printer object is not stored inside the Report object, but the report object has a uses-a relationship with Printer, calling it only in a member fucntion
+
+4.
+As it needs a printer variable to be passed to it because of dependency, it doesn't store a Printer object inside
+
+
+Question 15:
+
+1.
+Electronic woof
+Electronic Woof
+
+2.
+because the speak() function is virtual, meaning it uses dynamic binding no matter what class its called from, to always call the most derived implementation, in this case robotdog implementaiton
+
+3.
+Theoretically, its an inteface because it only has pure virtual functions, no other member variables
+
+4.
+Yes, because Dog implements speak();
+
+Question 16:
+
+1.
+Base
+
+2.
+because the signatures do not match, as Base has a const suffix
+
+3.
+override
+
+4.
+void print() const override {
+        std::cout << "Derived\n";
+    }
+
+Question 17:
+
+1.
+No
+
+2.
+in the add implementaiotn, it cannot be const as it alters the count variable
+
+3.
+because the function alters the count variable
+
+4.
+return Counter(this->count + amount);
+
+Question 18:
+
+1.
+19
+
+2.
+Because all the member funcitons use return by reference
+
+3.
+it returns the current object this called the member function
+
+4.
+the chained call would not work, as n.multiply(3) woud return a void and then .add(4) would be called on a void object;
+
+Question 19:
+
+1.
+
+"Base constructed"
+"Derived constructed"
+"Derived destructed"
+"Base destructed"
+
+2.
+The Base part needs to exist first before Derived can be instationated
+
+3.
+The Derived class's destructor is called first and the destructor then call the base destructor
+
+4.
+inheritance
+
+Question 20:
+
+1.
+No, Derived cannot see private Base values
+
+2.
+std::cout << private_value << '\n';
+
+3.
+protected and public terms
+
+4.
+void print_values() const {
+        std::cout << protected_value << '\n';
+        std::cout << public_value << '\n';
+    }
+
+Question 21:
+
+1.
+No
+
+2.
+print('A');
+
+3.
+it means a function mathcing this signature cannot be called
+
+4.
+assuming print(char x) is implemented, then:
+
+int: 5
+double: 3.5
+char: A
+14
+10
+
+Question 22:
+
+1.
+7
+4.5
+
+2.
+it's the template type parameter used for both the internal member variables, and the output of the member function
+
+3.
+because they both satisfy the single typename parameter T used to construct the template
+
+4.
+it has to implement the operator>
+
+Question 23:
+
+1.
+constructor
+Copy constructor
+10
+
+2.
+Because print_number uses pass by value
+
+3.
+void print_number(const Number& n)
+
+4.
+to ensure print_number doesn't accidentally change the reference.
+
+Question 24:
+
+1.
+no
+
+2.
+delete[] p;
+
+3.
+delete p; only deletes one object while delete[] deletes an array of objects to which p is pointing.
+
+4.
+delete p;
+
+Quesiton 25:
+
+1.
+no
+
+2.
+delete values;
+
+3.
+delete[] values;
+values = nullptr;
+
+4.
+to make sure values dones't point to garbage values. Avoids danging pointers.
+
+Question 26:
+
++ is public, # is protected, - is private
+
+2.
+zero to many
+
+3.
+composition
+
+4.
+Aggregation
+
+5.
+dependency
+
+6.
+inheritance
+
+Question 27:
+
+1
+3
+
+2.
+continue skips the current iteration and continues with another iteration
+
+3.
+break stops the loops completely
+
+4.
+return exists the current function
+
+Question 28:
+
+1.
+two
+there
+
+2.
+because case 2: doesn't have a break so the case keeps going
+
+3.
+break;
+
+4.
+case 2:
+    std::cout << "two\n";
+    break;

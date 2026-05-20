@@ -1,0 +1,449 @@
+========
+Question 1
+========
+
+a,
+
+*ptr += 10;
+
+ref *= 2;
+
+int* temp = *ptr1;
+*ptr1 = *ptr2;
+*ptr2 = temp;
+
+increment_by_pointer(pA);
+double_by_reference(b);
+swap_pointers(&pA, &pB);
+
+
+Vector question:
+
+Question
+
+Your task is to write C++ code to define a class Vector2D.
+
+(a)
+
+An object of type Vector2D has two private data members named x and y.
+
+These data members can take floating point values.
+
+[2]
+
+(b)
+
+Write a constructor receiving two input arguments x and y, with default values 0, to initialise the data members described in part (a).
+
+You must use list initialisation, not assignment statements, to initialise these data members.
+
+[3]
+
+(c)
+
+Write a member function named add to perform the addition of two vectors.
+
+One of the two vectors is the current object.
+
+You need to decide the input and output types of this function.
+
+[3]
+
+(d)
+
+Write a member function named subtract to perform subtraction of two vectors.
+
+The statement
+
+a.subtract(b)
+
+should compute:
+
+a−b
+
+[3]
+
+(e)
+
+Write a member function named multiply_by_scalar to multiply a vector by a scalar value.
+
+For example, if
+
+Vector2D v {3, 4};
+
+then
+
+v.multiply_by_scalar(2)
+
+should represent the vector:
+
+(6, 8)
+
+[3]
+
+(f)
+
+Write a member function named dot_product to compute the dot product of two vectors.
+
+This function should return a floating point number, not a Vector2D object.
+
+For example:
+
+Vector2D a {1, 2};
+Vector2D b {3, 4};
+
+Then:
+
+a.dot_product(b)
+
+should return:
+
+11
+
+[3]
+
+(g)
+
+Write a function overloading the operator << of the object std::ostream so that the statement
+
+std::cout << v;
+
+works for a Vector2D object v.
+
+The vector should be printed in the following format:
+
+(x, y)
+
+For example, a vector with components 3 and 4 should be printed as:
+
+(3, 4)
+
+If you cannot overload the operator <<, you may instead write a member function called print().
+
+[5]
+
+(h)
+
+Now overload the operators + and - so that the following statements work for two Vector2D objects a and b:
+
+std::cout << a + b;
+std::cout << a - b;
+
+These should be equivalent to:
+
+std::cout << a.add(b);
+std::cout << a.subtract(b);
+
+[4]
+
+(i)
+
+Write a function to overload the assignment operator = for a Vector2D object so that the following statement works:
+
+c = a + b;
+
+where a, b, and c are all Vector2D objects.
+
+[3]
+
+(j)
+
+Now define a class Position2D derived from the class Vector2D.
+
+The class Position2D represents a point position in the plane, but for this question it should store the same two values as a vector.
+
+The class Position2D must have a constructor receiving two double values and must pass these values to the constructor of the parent class.
+
+[3]
+
+(k)
+
+Write a main function to perform the following tasks:
+
+Create an array of five Vector2D elements using dynamic memory allocation with a pointer to Vector2D.
+Initialise these five vectors using a for loop to obtain:
+v1 = (1, 2)
+v2 = (2, 3)
+v3 = (3, 4)
+v4 = (4, 5)
+v5 = (5, 6)
+Compute the sum using a for loop:
+s=
+j=1
+∑
+5
+	​
+
+v
+j
+	​
+
+=(15,20)
+Print the sum result to the console.
+Compute and print the dot product of the first and last vectors.
+Clean up the dynamically allocated memory when you do not need the array anymore.
+
+You may use either your member function add or your overloaded operator +.
+
+[6]
+
+#include <iostream>
+
+class Vector2D {
+    
+    private:
+        double x{};
+        double y{};
+
+    public:
+        Vector2D(double x = 0, double y = 0) : x(x), y(y) {}
+
+        Vector2D add(const Vector2D& v) const {
+            return Vector2D(x+v.x, y+v.y);
+        }
+
+        Vector2D subtract(const Vector2D& v) const {
+            return Vector2D(x-v.x, y-v.y);
+        }
+
+        Vector2D multiply_by_scalar(const double n) const {
+            return Vector2D(x*n,y*n);
+        }
+
+        double dot_product(const Vector2D& v) {
+            return (x*v.x + y*v.y);
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const Vector2D& v) {
+            out << "(" << v.x << ", " << v.y << ")";
+            return out;
+        }
+
+        Vector2D operator+(const Vector2D& v) const {
+            return this->add(v);
+        }
+
+        Vector2D operator-(const Vector2D& v) const {
+            return this->subtract(v);
+        }
+
+        Vector2D& operator=(const Vector2D& v) {
+            this->x = v.x;
+            this->y = v.y;
+            return *this;
+        }
+};
+
+class Position2D : public Vector2D {
+    public:
+        Position2D(double x, double y) : Vector2D(x,y) {}
+};
+
+int main() {
+
+    Vector2D* ptr { new Vector2D[5] };
+
+    for(int i{0}; i < 5; i++) {
+        ptr[i] = Vector2D(i+1, i+2);
+    }
+
+    Vector2D sum;
+    for(int i{0}; i < 5; i++) {
+        sum = sum + ptr[i];
+    }
+
+    std::cout << "The sum is: " << sum << std::endl;
+
+    double dot_product = ptr[0].dot_product(ptr[4]);
+    std::cout << "The dot product is: " << dot_product << std::endl;
+
+    delete[] ptr;
+
+    return 0;
+}
+
+
+=============================
+PARTICLE Question
+=============================
+
+#include <iostream>
+
+class Particle1D {
+
+    private:
+        double position;
+        double velocity;
+        double mass;
+
+    public:
+
+        Particle1D(double p = 0, double v = 0, double m = 1) : position(p), velocity(v), mass(m) {}
+
+        double momentum() const {
+            return mass*velocity;
+        }
+
+        Particle1D moved_by_time(const double time) const {
+            return Particle1D( (this->position + this->velocity * time), velocity, mass);
+        }
+
+        Particle1D speed_up(const double amount) const {
+            return Particle1D(position, velocity + amount, mass);
+        }
+
+        Particle1D combine(const Particle1D& p) const {
+            return Particle1D(position + p.position, velocity + p.velocity, mass + p.mass);
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const Particle1D& p) {
+            out << "(" << p.position << ", " << p.velocity << ", " << p.mass << ")";
+            return out;
+        }
+
+        Particle1D operator+(const Particle1D& p) const {
+            return this->combine(p);
+        }
+
+        Particle1D operator*(const double k) const {
+            return this->multiply_by_scalar(k);
+        }
+};
+
+class StationaryParticle : public Particle1D {
+
+    public:
+        StationaryParticle(double pos, double mass) : Particle1D(pos, 0, mass) {}
+};
+
+int main() {
+
+    Particle1D* ptr {new Particle1D[4]};
+
+    for(int i{0}; i < 4; i++) {
+        ptr[i] = Particle1D(i+1, i+2, i+3);
+    }
+
+    Particle1D total(0,0,0);
+    for(int i{0}; i < 4; i++) {
+        total = total + ptr[i];
+    }
+
+    std::cout << "The total is: " << total << std::endl;
+
+    std::cout << "The momentum is: " << total.momentum() << std::endl;
+
+    StationaryParticle s_particle(20, 10);
+    std::cout << "The Stationary Particle is: " << s_particle << std::endl;
+
+    delete[] ptr;
+
+    return 0;
+}
+
+
+
+
+===================
+LINEAR POLYNOMIAL
+===================
+
+#include <iostream>
+
+class LinearFunction {
+
+    private:
+        double a{};
+        double b{};
+
+    public:
+        LinearFunction(double a = 0, double b = 0) : a{a}, b{b} {}
+
+        double evaluate(const double x) const {
+            return (a*x + b);
+        }
+
+        LinearFuction add(const LinearFuction& f) const {
+            return (a+f.a , b+f.b);
+        }
+
+        LinearFunction multiply_by_scalar(const double r) const {
+            return LinearFunction( a*r, b*r);
+        }
+
+        LinearFunction repeat(const int n) const {
+            LinearFunction temp(0,0);
+
+            for(int i{0}; i < n; i++) {
+                temp = temp + (*this);
+            }
+
+            return temp;
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const LinearFunction& f) {
+            if(f.a == 0) {
+                out << f.b;
+            }
+            else if(f.b == 0) {
+                out << f.a << "*x";
+            }
+            else if(f.b < 0) {
+                out << f.a << "*x" << " - " << f.b;
+            else {
+                out << f.a << "*x" << " + " << f.b;
+            }
+
+            return out;
+        }
+
+        LinearFunction operator+(const LinearFunction& f) const {
+            return this->add(f);
+        }
+
+        LinearFunction operator+(const double k) const {
+            return this->multiply_by_scalar(k);
+        }
+
+        LinearFunction& operator=(const LinearFunction& f) {
+            a = f.a;
+            b = f.b;
+            return *this;
+        }
+};
+
+class ConstantFunction : public LinearFunction {
+
+    public:
+        ConstantFunction(double b) : LinearFunction(0,b) {}
+};
+
+int main() {
+
+    LinearFunction* ptr { new LinearFunction[5]};
+
+    for( int i{0}; i < 5; i++) {
+        ptr[i] = LinearFunction(i+1, i+2);
+    }
+
+    LinearFunction sum(0,0);
+    for( int i{0}; i < 5; i++) {
+        sum = sum + ptr[i];
+    }
+
+    std::cout << "The sum is: " << sum << std::endl;
+
+    std::cout << "The sum evaluates to: " << sum.evaluate(2) << std::endl;
+
+    std::cout << "3s evaluates to: " << sum.repeat(3) << std::endl;
+
+    ConstantFunction c(10);
+
+    std::cout << "The constant function is: " << c << std::endl;
+
+    delete[] ptr;
+
+
+    return 0;
+}
+

@@ -1,0 +1,97 @@
+=========
+Question 3
+=========
+
+#include <iostream>
+#include <string>
+#include <bits/stdc++.h>
+
+class Fraction {
+
+    private:
+        int nom{};
+        int denom{};
+
+    public:
+        Fraction(int nom = 0, int denom = 1) : nom{nom}, denom{denom} {
+            if(denom == 0) {
+                std::cout << "Setting denominator to 1\n";
+                this->denom = 1;
+            }
+        }
+
+        Fraction add(const Fraction& f) const {
+            double temp_nom = nom*f.denom + denom*f.nom;
+            double temp_denom = denom*f.denom;
+            return Fraction(temp_nom, temp_denom);
+        }
+
+        Fraction mult(const Fraction& f) const {
+            return Fraction( (nom*f.nom), (denom*f.denom) );
+        }
+
+        friend std::ostream& operator<<(std::ostream& out, const Fraction& f) {
+            if(f.nom == 0) {
+                out << "0";
+            }
+            else if(f.denom == 1) {
+                out << f.nom;
+            }
+            else if( (f.nom < 0 && f.denom > 0) || (f.nom > 0 && f.denom < 0) ) {
+                out << " - " << std::abs(f.nom) << "/" << std::abs(f.denom);
+            }
+            else {
+                out << std::abs(f.nom) << "/" << std::abs(f.denom);
+            }
+
+            return out;
+        }
+
+        Fraction operator+(const Fraction& f) const {
+            return this->add(f);
+        }
+
+        Fraction operator*(const Fraction& f) const {
+            return this->mult(f);
+        }
+
+        Fraction& operator=(const Fraction& f) {
+            nom = f.nom;
+            denom = f.denom;
+            return *this;
+        }
+
+        Fraction reduce() const {
+            double gcd = std::__gcd(nom, denom);
+            return Fraction(nom / gcd , denom / gcd);
+        } 
+
+};
+
+int main () {
+
+    std::vector<Fraction> vect{};
+
+    for(int i{0}; i < 5; i++) {
+        vect.push_back( Fraction(1, i+2) );
+    }
+
+    Fraction product{1,1};
+    for(int i{0}; i < 5; i++) {
+        product = product * vect[i];
+    }
+
+    /*
+    This is also an option
+
+    for( const Fraction& f : vect) {
+        product = product * f;
+    }
+
+    */
+
+    std::cout << "The product is: " << product;
+
+
+    return 0;
+}
