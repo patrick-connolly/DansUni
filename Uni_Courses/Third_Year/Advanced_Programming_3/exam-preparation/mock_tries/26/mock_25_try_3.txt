@@ -1,0 +1,155 @@
+=======
+Question 1
+======
+
+
+a,
+#include <iostream>
+// 1. Increments the value of 'n' by 10 using a pointer.
+void increment_by_pointer(int* ptr) {
+    *ptr += 10;
+}
+
+// 2. Doubles the value of 'n' using a reference.
+int& double_by_reference(int& ref) {
+    ref *= 2;
+}
+
+int new_value = double_by_reference(old_value);
+
+// 3. Swaps the address held by two pointers (Pointer to Pointer).
+// Note: This should change where the pointers in main point to.
+void swap_pointers(int** ptr1, int** ptr2) {
+    int* temp_pointer = *ptr1;
+    *ptr1 = *ptr2;
+    *ptr2 = temp;
+}
+
+int main() {
+    int a { 5 };
+    int b { 50 };
+    
+    int* pA { &a };
+    int* pB { &b };
+
+    // Task 1: Use increment_by_pointer to make 'a' equal to 15.
+    increment_by_pointer(pA);
+    // Task 2: Use double_by_reference to make 'b' equal to 100.
+    double_by_reference(a);
+    // Task 3: Use swap_pointers so that pA points to 'b' and pB points to 'a'.
+    swap_pointers(&pA, &pB);
+
+    return 0;
+}
+
+template<typename T>
+auto find_max(const T& x, const V& y) {
+    return (x > y) ? x : y;
+}
+
+double process() override {
+
+}
+
+virtual void process() = 0;
+class Payment {
+    private:
+        int money;
+        int* ptr = new int[5];
+}
+
+class ComplexNumber {
+
+    private:
+        Payment& my_payments{};
+        double re{};
+        double im{};
+
+    public:
+        ComplexNumber(double re = 0, double im = 0) : re{re}, im(im) {}
+
+        friend std::ostream& operator<<(std::ostream& out, const ComplexNumber& num) {
+            if(num.im == 0) {
+                out << num.re;
+            }
+            else if(num.re == 0){
+                out << num.im << "i";
+            }
+            else if(num.re != 0 && num.im < 0) {
+                out << num.re << " - " << std::abs(num.im) << "i";
+            }
+            else {
+                out << num.re << " + " << num.im << "i";
+            }
+
+            return out;
+        }
+
+        friend ComplexNumber operator+(const ComplexNumber& n1, const ComplexNumber& n2) {
+            double temp_re = n1.re + n2.re;
+            double temp_im = n1.im + n2.im;
+            return ComplexNumber(temp_re, temp_im);
+        }
+
+        friend ComplexNumber operator*(const ComplexNumber& n1, const ComplexNumber& n2) {
+            double temp_re = n1.re*n2.re - n1.im*n2.im;
+
+            return ComplexNumber(temp_re, temp_im);
+        }
+        
+        ComplexNumber& operator=(const ComplexNumber& n) {
+            this->re = n.re;
+            this->im = n.im;
+            return (*this);
+        }
+
+        ComplexNumber pow(const int n) {
+            ComplexNumber temp(1,0);
+
+            for(int i{0}; i < n; i++) {
+                temp = temp * (*this);
+            }
+
+            return temp;
+        }
+};
+
+class RealNumber : public ComplexNumber {
+    public:
+        RealNumber(double re) : ComplexNumber(re, 0) {};
+};
+
+class DoubleImaginary : public ComplexNumber {
+
+    private:
+        double x;
+    
+    public:
+        DoubleImaginary(double x) : x(x), ComplexNumber(0,0) {}
+
+}
+
+
+a = b;
+
+int main() {
+    
+    ComplexNumber* ptr { new ComplexNumber[5] };
+
+    for(int i{0}; i < 5; i++) {
+        ptr[i] = ComplexNumber(i+1, i+2);
+    }
+
+    ComplexNumber sum(0,0);
+    for(int i{0}; i < 5; i++) {
+        sum = sum + ptr[i];
+    }
+
+    std::cout << "the sum is equal to: " << sum;
+
+
+
+
+
+    return 0;
+}
