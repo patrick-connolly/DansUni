@@ -22,7 +22,7 @@ ALL OUR PRE-LOADED VALUES RAN FOR MORE ITERATIONS,
 SO THE LOADED WEIGHTS ARE MORE ACCURATE THAN THE DEMO BELOW, 
 
 the MNIST pre-fitted accuracy is much better (fitting took me 20 minutes)
-as it trained on the full 100 MB not the smaller MNIST_mini the test.cpp uses
+as it trained on the full 100 MB not the smaller MNIST_mini the demo.cpp uses
 so we don't bundle the huge one
 
 =============================
