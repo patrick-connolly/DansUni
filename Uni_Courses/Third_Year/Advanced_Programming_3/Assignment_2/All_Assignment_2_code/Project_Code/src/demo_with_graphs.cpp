@@ -2,10 +2,14 @@
 
 #include <iostream>
 #include <chrono>
+#include <sstream>
 
 //this file includes all the weights we have already tested so this file can show predict(), among other functionality, 
 //without taking 15 minutes to fit the models each time
 #include "pre_fitted_values.hpp" 
+
+//we include matplot++ to show the graphs of the predictions vs actual values for the linear regression models,
+#include <matplot/matplot.h>
 
 /*
 
@@ -53,6 +57,39 @@ std::ostream& operator<<(std::ostream& out, const std::vector<T>& vector) {
     out << "}";
 
     return out;
+}
+
+// Function to plot regression parity
+void plot_regression_parity(const sklearn_cpp::Dataset& actual,
+                            const sklearn_cpp::Dataset& predicted,
+                            const std::string& plot_title,
+                            double r2_value) {
+    using namespace matplot;
+
+    if (actual.y.empty() || predicted.y.empty() || actual.y.size() != predicted.y.size()) {
+        throw std::runtime_error("Cannot plot regression results.");
+    }
+
+    double min_value = std::min(actual.y[0], predicted.y[0]);
+    double max_value = std::max(actual.y[0], predicted.y[0]);
+
+    for (size_t i = 1; i < actual.y.size(); ++i) {
+        min_value = std::min(min_value, std::min(actual.y[i], predicted.y[i]));
+        max_value = std::max(max_value, std::max(actual.y[i], predicted.y[i]));
+    }
+
+    figure(true);
+    hold(on);
+    plot({min_value, max_value}, {min_value, max_value}, "r-")->line_width(3);
+    scatter(actual.y, predicted.y);
+    xlim({min_value, max_value});
+    ylim({min_value, max_value});
+    std::ostringstream title_stream;
+    title_stream << plot_title << " (R2 = " << r2_value << ")";
+    title(title_stream.str());
+    xlabel("Actual y");
+    ylabel("Predicted y");
+    show();
 }
 
 int main() {
@@ -111,10 +148,14 @@ int main() {
 
         sklearn_cpp::Dataset concrete_incomplete = sklearn_cpp::CSVReader::read_CSV("data/concrete_incomplete.csv", true);
         sklearn_cpp::Dataset concrete_predictions = lr.predict(concrete_incomplete);
-        double r2 = lr.r2_score(concrete_incomplete);
+        sklearn_cpp::Dataset concrete_predictions_for_plot = lr.predict(concrete);
+        double r2 = lr.r2_score(concrete);
 
         //concrete_predictions.print(); this print is REALLY big :D
         std::cout << "R2 Score: " << r2 << std::endl;
+
+        //calls the plot function
+        plot_regression_parity(concrete, concrete_predictions_for_plot, "Concrete: Actual vs Predicted", r2);
 
         //print the weights if the .fit() function was ran
         if(PRINT_TRAINED_WEIGHTS == 1) {
@@ -161,10 +202,14 @@ int main() {
 
         double r2_boston = model.r2_score(boston); //calculate the R2 score on the same dataset
         sklearn_cpp::Dataset predictions = model.predict(boston); //use the predict function on the same dataset and print the predictions
+        sklearn_cpp::Dataset boston_predictions_for_plot = model.predict(boston);
         //predictions.print(); //print dataset this print is REALLY big :D
-
+        
         std::cout << "R2 Score: " << r2_boston << std::endl; //print R2 score
 
+        //calls the plot function
+        plot_regression_parity(boston, boston_predictions_for_plot, "Boston: Actual vs Predicted", r2_boston);
+       
         //print the weights if the .fit() function was ran
         if (PRINT_TRAINED_WEIGHTS == 1) {
             std::cout << "\n== Boston Linear Regression fitted values== n";
